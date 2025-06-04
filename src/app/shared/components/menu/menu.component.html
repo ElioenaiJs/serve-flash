@@ -9,16 +9,13 @@
 
   <!-- Barra de navegación -->
   <nav class="nav-menu">
-    @for (item of menuItems; track $index) {
-        <a 
-      mat-button 
-      routerLinkActive="active-link"
-    >
+  @for (item of menuItems; track $index) {
+    <a mat-button [routerLink]="item.route">
       <mat-icon>{{item.icon}}</mat-icon>
       {{item.name}}
     </a>
-    }
-  </nav>
+  }
+</nav>
 
   <!-- Acciones rápidas y notificaciones -->
   <div class="actions">

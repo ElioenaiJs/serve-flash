@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { MenuComponent } from "../../../shared/components/menu/menu/menu.component";
+import { RouterOutlet } from '@angular/router';
+import { MenuComponent } from "../../../shared/components/menu/menu.component";
 
 @Component({
   selector: 'app-admin-layout',
-  imports: [MenuComponent],
+  imports: [MenuComponent, RouterOutlet],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss'
 })
