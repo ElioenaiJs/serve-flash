@@ -1,1 +1,43 @@
-<p>admin-products works!</p>
+<mat-drawer-container class="full-height-drawer-container">
+  <mat-drawer class="app-sidenav" mode="side" [opened]="isMenuOpen">
+  
+    <mat-nav-list>
+      <!-- Opción Todos los productos -->
+      <mat-list-item>
+        <mat-icon matListItemIcon>apps</mat-icon>
+        <span matListItemTitle>Todos los productos</span>
+      </mat-list-item>
+      
+      <!-- Opción Café -->
+      <mat-list-item>
+        <mat-icon matListItemIcon>local_cafe</mat-icon>
+        <span matListItemTitle>Café</span>
+      </mat-list-item>
+      
+      <!-- Opción Postres -->
+      <mat-list-item>
+        <mat-icon matListItemIcon>cake</mat-icon>
+        <span matListItemTitle>Postres</span>
+      </mat-list-item>
+      
+      <!-- Opción Bebidas -->
+      <mat-list-item>
+        <mat-icon matListItemIcon>local_bar</mat-icon>
+        <span matListItemTitle>Bebidas</span>
+      </mat-list-item>
+      
+      <!-- Opción Sandwiches -->
+      <mat-list-item>
+        <mat-icon matListItemIcon>lunch_dining</mat-icon>
+        <span matListItemTitle>Sandwiches</span>
+      </mat-list-item>
+      
+    </mat-nav-list>
+  </mat-drawer>
+
+  <mat-drawer-content class="app-main-content">
+    <mat-icon class="app-menu-icon" (click)="isMenuOpen = !isMenuOpen">
+      menu
+    </mat-icon>
+  </mat-drawer-content>
+</mat-drawer-container>
