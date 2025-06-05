@@ -32,7 +32,6 @@ export class MenuComponent {
   menuItems = [
     { name: 'Dashboard', icon: 'dashboard', route: '/admin/dashboard' },
     { name: 'Productos', icon: 'inventory_2', route: '/admin/products' },
-    { name: 'Inventario', icon: 'warehouse', route: '/admin/inventory' },
     { name: 'Usuarios', icon: 'manage_accounts', route: '/admin/users' }
   ];
 

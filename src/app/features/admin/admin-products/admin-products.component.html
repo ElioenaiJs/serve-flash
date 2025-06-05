@@ -1,37 +1,12 @@
 <mat-drawer-container class="full-height-drawer-container">
   <mat-drawer class="app-sidenav" mode="side" [opened]="isMenuOpen">
-  
     <mat-nav-list>
-      <!-- Opción Todos los productos -->
+      @for (item of menuItems; track $index) {
       <mat-list-item>
-        <mat-icon matListItemIcon>apps</mat-icon>
-        <span matListItemTitle>Todos los productos</span>
+        <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+        <span matListItemTitle>{{ item.title }}</span>
       </mat-list-item>
-      
-      <!-- Opción Café -->
-      <mat-list-item>
-        <mat-icon matListItemIcon>local_cafe</mat-icon>
-        <span matListItemTitle>Café</span>
-      </mat-list-item>
-      
-      <!-- Opción Postres -->
-      <mat-list-item>
-        <mat-icon matListItemIcon>cake</mat-icon>
-        <span matListItemTitle>Postres</span>
-      </mat-list-item>
-      
-      <!-- Opción Bebidas -->
-      <mat-list-item>
-        <mat-icon matListItemIcon>local_bar</mat-icon>
-        <span matListItemTitle>Bebidas</span>
-      </mat-list-item>
-      
-      <!-- Opción Sandwiches -->
-      <mat-list-item>
-        <mat-icon matListItemIcon>lunch_dining</mat-icon>
-        <span matListItemTitle>Sandwiches</span>
-      </mat-list-item>
-      
+      }
     </mat-nav-list>
   </mat-drawer>
 
@@ -39,5 +14,25 @@
     <mat-icon class="app-menu-icon" (click)="isMenuOpen = !isMenuOpen">
       menu
     </mat-icon>
+
+    <section class="products-container">
+      <div class="products-grid">
+        @for (product of products; track $index) {
+        <mat-card class="product-card">
+          <img mat-card-image [src]="product.imageUrl" [alt]="product.title" />
+          <mat-card-header>
+            <mat-card-title>{{ product.title }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ product.description }}</p>
+          </mat-card-content>
+          <mat-card-actions class="card-actions">
+            <span class="price">${{ product.price.toFixed(2) }}</span>
+            <button mat-stroked-button color="primary">Editar</button>
+          </mat-card-actions>
+        </mat-card>
+        }
+      </div>
+    </section>
   </mat-drawer-content>
 </mat-drawer-container>
