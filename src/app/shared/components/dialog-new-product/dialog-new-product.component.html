@@ -1,0 +1,84 @@
+<h2 mat-dialog-title>
+  {{ data ? "Editar Producto" : "Registrar Producto" }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="form-container">
+      <!-- Columna izquierda (formulario) -->
+      <div class="form-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input matInput formControlName="name" required />
+          @if (productForm.get('name')?.hasError('required')) {
+          <mat-error> El nombre es requerido </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Descripción</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            rows="3"
+            required
+          ></textarea>
+          @if (productForm.get('description')?.hasError('required')) {
+          <mat-error> La descripción es requerida </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Precio</mat-label>
+          <input matInput type="number" formControlName="price" required />
+          <span matPrefix>&nbsp;&nbsp;$&nbsp;</span>
+          @if (productForm.get('price')?.hasError('required')) {
+          <mat-error> El precio es requerido </mat-error>
+          } @if (productForm.get('price')?.hasError('min')) {
+          <mat-error> El precio debe ser positivo </mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <!-- Columna derecha (imagen) -->
+      <div class="image-column">
+        <div class="image-upload-container">
+          <input
+            type="file"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+            #fileInput
+            style="display: none"
+          />
+
+          <div class="image-preview" (click)="fileInput.click()">
+            @if (imagePreview) {
+            <img [src]="imagePreview" alt="Vista previa de la imagen" />
+            } @else {
+            <mat-icon>add_photo_alternate</mat-icon>
+            <span>Seleccionar imagen</span>
+            }
+          </div>
+
+          <button mat-stroked-button type="button" (click)="fileInput.click()">
+            <mat-icon>upload</mat-icon>
+            Subir imagen
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="onCancel()">Cancelar</button>
+  <button
+    mat-raised-button
+    color="primary"
+    class="button-save"
+    (click)="onSubmit()"
+    [disabled]="!productForm.valid"
+  >
+    {{ data ? "Actualizar" : "Guardar" }}
+  </button>
+</mat-dialog-actions>
