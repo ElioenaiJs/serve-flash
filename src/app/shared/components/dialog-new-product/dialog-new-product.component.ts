@@ -1,13 +1,13 @@
-import { Component, Inject, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { Component, inject } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+
 @Component({
   selector: 'app-dialog-new-product',
   standalone: true,
@@ -18,30 +18,28 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSelectModule
   ],
   templateUrl: './dialog-new-product.component.html',
   styleUrl: './dialog-new-product.component.scss'
 })
 export class DialogNewProductComponent {
-  // Inyección de dependencias
-  dialogRef = inject(MatDialogRef<DialogNewProductComponent>);
-  data = inject(MAT_DIALOG_DATA, { optional: true });
-  fb = inject(FormBuilder);
+  public dialogRef = inject(MatDialogRef<DialogNewProductComponent>);
+  public data = inject(MAT_DIALOG_DATA, { optional: true });
+  public fb = inject(FormBuilder);
 
-  // Formulario reactivo
-  productForm = this.fb.group({
+  public productForm = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(50)]],
     description: ['', [Validators.required, Validators.maxLength(200)]],
     price: ['', [Validators.required, Validators.min(0)]],
-    image: [null as File | null]
+    image: [null as File | null, [Validators.required]],
+    category: ['', [Validators.required]]
   });
 
-  // Vista previa de la imagen
-  imagePreview: string | ArrayBuffer | null = null;
+  public imagePreview: string | ArrayBuffer | null = null;
 
-  // Manejo de selección de archivo
-  onFileSelected(event: Event): void {
+  public onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files?.[0]) {
       const file = input.files[0];
@@ -56,15 +54,13 @@ export class DialogNewProductComponent {
     }
   }
 
-  // Envío del formulario
-  onSubmit(): void {
+  public onSubmit(): void {
     if (this.productForm.valid) {
       this.dialogRef.close(this.productForm.value);
     }
   }
 
-  // Cancelar
-  onCancel(): void {
+  public onCancel(): void {
     this.dialogRef.close();
   }
 }

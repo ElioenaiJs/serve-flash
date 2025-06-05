@@ -29,6 +29,20 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
+          <mat-label>Categoría</mat-label>
+          <mat-select formControlName="category" required>
+            <mat-option value="" disabled>Seleccione una categoría</mat-option>
+            <mat-option value="comida">Comida</mat-option>
+            <mat-option value="bebida">Bebida</mat-option>
+            <mat-option value="postre">Postre</mat-option>
+            <mat-option value="otro">Otro</mat-option>
+          </mat-select>
+          @if (productForm.get('category')?.hasError('required')) {
+          <mat-error> La categoría es requerida </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
           <mat-label>Precio</mat-label>
           <input matInput type="number" formControlName="price" required />
           <span matPrefix>&nbsp;&nbsp;$&nbsp;</span>
