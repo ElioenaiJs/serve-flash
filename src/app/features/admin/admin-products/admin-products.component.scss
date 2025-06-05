@@ -80,7 +80,7 @@ img[mat-card-image] {
   padding: 2 1rem; 
   margin-bottom: 16px;
   button{
-    background-color: #3f51b5;
+    background-color: #00704A;
     color: white;
   }
 }
@@ -89,4 +89,8 @@ img[mat-card-image] {
   button{
     margin-right: 10px;
   }
+}
+
+.divider{
+  height: 80px;
 }
