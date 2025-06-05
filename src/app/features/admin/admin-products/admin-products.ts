@@ -62,5 +62,19 @@ export const products: Product[] = [
       description: 'Triple sandwich de pollo',
       price: 5.00,
       imageUrl: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5'
+    },
+    {
+      id: 5,
+      title: 'Brownie',
+      description: 'Brownie de chocolate con nueces',
+      price: 3.50,
+      imageUrl: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5'
+    },
+    {
+      id: 6,
+      title: 'Sandwich Club',
+      description: 'Triple sandwich de pollo',
+      price: 5.00,
+      imageUrl: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5'
     }
 ];

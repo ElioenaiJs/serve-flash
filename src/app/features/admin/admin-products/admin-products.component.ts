@@ -14,7 +14,7 @@ import { menuItems, products } from './admin-products';
 })
 export class AdminProductsComponent {
   public isMenuOpen = true;
-
+  public showFiller = false;
   menuItems = menuItems;
   products = products;
 }
