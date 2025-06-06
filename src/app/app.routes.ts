@@ -38,19 +38,19 @@ export const routes: Routes = [
   },
   {
     path: 'client',
-    loadComponent: () => import('./features/client/client-layout/client-layout.component').then(m => m.ClientLayoutComponent),
+    loadComponent: () => import('./features/client/customer-layout/customer-layout.component').then(m => m.CustomerLayoutComponent),
     children: [
       {
         path: 'home',
-        loadComponent: () => import('./features/client/client-home/client-home.component').then(m => m.ClientHomeComponent)
+        loadComponent: () => import('./features/client/customer-home/customer-home.component').then(m => m.CustomerHomeComponent)
       },
       {
         path: 'products',
-        loadComponent: () => import('./features/client/client-products/client-products.component').then(m => m.ClientProductsComponent)
+        loadComponent: () => import('./features/client/customer-products/customer-products.component').then(m => m.CustomerProductsComponent)
       },
       {
         path: 'cart',
-        loadComponent: () => import('./features/client/client-cart-component/client-cart-component.component').then(m => m.ClientCartComponentComponent)
+        loadComponent: () => import('./features/client/customer-cart-component/customer-cart-component.component').then(m => m.CustomerCartComponentComponent)
       }
     ]
   },

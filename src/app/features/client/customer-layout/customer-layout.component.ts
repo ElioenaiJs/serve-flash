@@ -5,9 +5,9 @@ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-client-layout',
   imports: [MenuComponent, RouterOutlet],
-  templateUrl: './client-layout.component.html',
-  styleUrl: './client-layout.component.scss'
+  templateUrl: './customer-layout.component.html',
+  styleUrl: './customer-layout.component.scss'
 })
-export class ClientLayoutComponent {
+export class CustomerLayoutComponent {
 
 }
