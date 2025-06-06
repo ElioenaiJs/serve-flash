@@ -1,0 +1,47 @@
+/* Estilos base */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Previene el scroll en toda la página */
+}
+
+.customer-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+.layout-content {
+  flex: 1;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+}
+
+.router-outlet-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+/* Personalización de la barra de scroll (opcional) */
+.router-outlet-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.router-outlet-wrapper::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.router-outlet-wrapper::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.router-outlet-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

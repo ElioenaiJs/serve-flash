@@ -36,9 +36,9 @@ export class MenuComponent {
   ];
 
   menuItemsClient = [
-    { name: 'Inicio', icon: 'home', route: '/client/home' },
-    { name: 'Productos', icon: 'shopping_bag', route: '/client/products' },
-    { name: 'Carrito', icon: 'shopping_cart', route: '/client/cart' }
+    { name: 'Inicio', icon: 'home', route: '/customer/home' },
+    { name: 'Productos', icon: 'shopping_bag', route: '/admin/products' },
+    { name: 'Carrito', icon: 'shopping_cart', route: '/customer/cart' }
   ];
 
 
