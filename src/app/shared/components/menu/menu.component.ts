@@ -35,6 +35,13 @@ export class MenuComponent {
     { name: 'Usuarios', icon: 'manage_accounts', route: '/admin/users' }
   ];
 
+  menuItemsClient = [
+    { name: 'Inicio', icon: 'home', route: '/client/home' },
+    { name: 'Productos', icon: 'shopping_bag', route: '/client/products' },
+    { name: 'Carrito', icon: 'shopping_cart', route: '/client/cart' }
+  ];
+
+
   quickActions = [
     { name: 'Nuevo Producto', icon: 'add_circle', action: 'addProduct' },
     { name: 'Agregar Usuario', icon: 'person_add', action: 'addUser' }

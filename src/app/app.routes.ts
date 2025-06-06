@@ -36,5 +36,23 @@ export const routes: Routes = [
       { path: '', redirectTo: 'products', pathMatch: 'full' }
     ]
   },
+  {
+    path: 'client',
+    loadComponent: () => import('./features/client/client-layout/client-layout.component').then(m => m.ClientLayoutComponent),
+    children: [
+      {
+        path: 'home',
+        loadComponent: () => import('./features/client/client-home/client-home.component').then(m => m.ClientHomeComponent)
+      },
+      {
+        path: 'products',
+        loadComponent: () => import('./features/client/client-products/client-products.component').then(m => m.ClientProductsComponent)
+      },
+      {
+        path: 'cart',
+        loadComponent: () => import('./features/client/client-cart-component/client-cart-component.component').then(m => m.ClientCartComponentComponent)
+      }
+    ]
+  },
   { path: '**', redirectTo: '' }
 ];

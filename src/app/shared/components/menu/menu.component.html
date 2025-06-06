@@ -9,7 +9,7 @@
 
   <!-- Barra de navegación -->
   <nav class="nav-menu">
-  @for (item of menuItems; track $index) {
+  @for (item of menuItemsClient; track $index) {
     <a mat-button [routerLink]="item.route">
       <mat-icon>{{item.icon}}</mat-icon>
       {{item.name}}
