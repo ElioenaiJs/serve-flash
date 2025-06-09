@@ -51,13 +51,13 @@
                 (click)="handleAddToCart(product)"
                 [matTooltip]="addedItems[product.id] ? '¡Agregado al carrito!' : 'Agregar al carrito'"
               >
-                @if (addedItems[product.id]) {
+                <!-- @if (addedItems[product.id]) {
                   <mat-icon>check</mat-icon>
                   Agregado
                 } @else {
                   <mat-icon>add</mat-icon>
                   Agregar
-                }
+                } -->
               </button>
             </mat-card-actions>
           </mat-card>
