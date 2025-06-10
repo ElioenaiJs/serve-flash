@@ -26,6 +26,8 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
+  errorMessage: string | null = null;
+
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -38,11 +40,27 @@ export class RegisterComponent {
   }, { validators: this.passwordsMatchValidator });
 
   onSubmit(): void {
+    this.errorMessage = null;
+
     if (this.registerForm.invalid) return;
 
     const { email, username, password } = this.registerForm.value;
+
     this.authService.register(email!, username!, password!)
-      .subscribe(() => this.router.navigate(['/login']));
+      .subscribe({
+        next: () => this.router.navigate(['/login']),
+        error: (error) => {
+          if (error?.code === 'auth/email-already-in-use') {
+            this.errorMessage = 'Este correo ya está en uso.';
+          } else if (error?.code === 'auth/invalid-email') {
+            this.errorMessage = 'El correo electrónico no es válido.';
+          } else if (error?.code === 'auth/weak-password') {
+            this.errorMessage = 'La contraseña es muy débil.';
+          } else {
+            this.errorMessage = 'Ocurrió un error inesperado.';
+          }
+        }
+      });
   }
 
   // Validator para que password y confirmPassword coincidan
