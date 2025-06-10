@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Database, get, onValue, query, ref } from '@angular/fire/database';
 import { BehaviorSubject, filter, from, map, Observable, switchMap, take } from 'rxjs';
+import { Product } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class ProductService {
     });
   }
 
-  getProducts(): Observable<any[]> {
+  getProducts(): Observable<Product[]> {
     return this.connected.pipe(
       filter(isConnected => isConnected),
       take(1),
