@@ -24,6 +24,6 @@ import { RouterModule } from '@angular/router';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegistrarseComponent {
+export class RegisterComponent {
   
 }
