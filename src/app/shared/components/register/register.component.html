@@ -1,28 +1,42 @@
 <div class="register-container">
-  <div class="background-overlay"></div>
   <mat-card>
     <mat-card-title class="text-center">Registrarse</mat-card-title>
     <mat-card-content>
-      <form>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Nombre Completo</mat-label>
+          <input matInput formControlName="username" placeholder="Juan Pérez">
+          <mat-error *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+            Campo requerido
+          </mat-error>
+        </mat-form-field>
+
         <mat-form-field appearance="outline" class="w-100 mb-3">
           <mat-label>Correo Electrónico</mat-label>
-          <input matInput type="email" name="email" placeholder="correo@ejemplo.com" required>
+          <input matInput type="email" formControlName="email" placeholder="correo@ejemplo.com">
+          <mat-error *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            Correo inválido
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100 mb-3">
           <mat-label>Contraseña</mat-label>
-          <input matInput placeholder="Contraseña" required minlength="6">
-          <button mat-icon-button matSuffix type="button">
-            <mat-icon></mat-icon>
-          </button>
+          <input matInput type="password" formControlName="password" placeholder="Contraseña">
+          <mat-error *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            Mínimo 6 caracteres
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100 mb-3">
           <mat-label>Confirmar Contraseña</mat-label>
-          <input matInput name="confirmPassword"  placeholder="Confirmar contraseña" required minlength="6">
+          <input matInput type="password" formControlName="confirmPassword" placeholder="Confirmar contraseña">
+          <mat-error *ngIf="passwordsDoNotMatch">
+            Las contraseñas no coinciden
+          </mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" class="w-100 mb-3">
+        <button mat-raised-button color="primary" type="submit" class="w-100 mb-3" [disabled]="registerForm.invalid">
           Registrarse
         </button>
       </form>
@@ -35,14 +49,12 @@
         <mat-icon svgIcon="google" style="margin-right: 8px;"></mat-icon> Registrarse con Google
       </button>
     </mat-card-content>
+
     <mat-card-actions>
       <p class="text-center w-100">
-        ¿Ya tienes cuenta? 
+        ¿Ya tienes cuenta?
         <a routerLink="/login" routerLinkActive="active">Inicia sesión</a>
       </p>
     </mat-card-actions>
-    <mat-card-footer >
-      
-    </mat-card-footer>
   </mat-card>
 </div>

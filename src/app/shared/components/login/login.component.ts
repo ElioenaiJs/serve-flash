@@ -8,8 +8,6 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-
-
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -28,4 +26,9 @@ import { FormsModule } from '@angular/forms';
 })
 export class LoginComponent {
   errorMessage: string | null = null;
+}
+
+export interface LoginForm {
+  username: string;
+  password: string;
 }
