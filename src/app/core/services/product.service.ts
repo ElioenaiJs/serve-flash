@@ -1,17 +1,23 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Database, get, onValue, query, ref } from '@angular/fire/database';
 import { BehaviorSubject, filter, from, map, Observable, switchMap, take } from 'rxjs';
 import { Product } from '../models/product.model';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private db = inject(Database);
   private connected = new BehaviorSubject<boolean>(false);
+  private productsRef: AngularFireList<any>;
 
-  constructor() {
-    const connectedRef = ref(this.db, '.info/connected');
+  constructor(private afDb: AngularFireDatabase) {
+    // Usamos la instancia de Database de AngularFireDatabase para la conexión
+    const db = afDb.database;
+    const connectedRef = ref(db, '.info/connected');
+    
+    this.productsRef = afDb.list('products');
+    
     onValue(connectedRef, (snapshot) => {
       this.connected.next(snapshot.val() === true);
     });
@@ -22,7 +28,10 @@ export class ProductService {
       filter(isConnected => isConnected),
       take(1),
       switchMap(() => {
-        const productsRef = ref(this.db, 'products');
+        // Usamos la misma instancia de Database que ya tenemos
+        const db = this.afDb.database;
+        const productsRef = ref(db, 'products');
+        
         return from(get(query(productsRef))).pipe(
           map(snapshot => {
             if (!snapshot.exists()) {
@@ -30,7 +39,7 @@ export class ProductService {
               return [];
             }
 
-            const products: any[] = [];
+            const products: Product[] = [];
             snapshot.forEach(childSnapshot => {
               products.push({
                 id: childSnapshot.key,
@@ -42,5 +51,28 @@ export class ProductService {
         );
       })
     );
+  }
+
+  createProduct(productData: Omit<Product, 'id'>): Promise<Product & { id: string }> {
+    const newProduct = {
+      ...productData,
+      isActive: true,
+      createdAt: Date.now()
+    };
+
+    return this.productsRef.push(newProduct)
+      .then(ref => ({
+        id: ref.key as string,
+        ...newProduct
+      }))
+      .catch(error => {
+        console.error('Error creating product:', error);
+        throw error;
+      });
+  }
+
+  // Método adicional para obtener el estado de conexión si es necesario
+  getConnectionStatus(): Observable<boolean> {
+    return this.connected.asObservable();
   }
 }
