@@ -6,6 +6,10 @@ export const routes: Routes = [
     loadComponent: () => import('./shared/components/login/login.component').then(m => m.LoginComponent)
   },
   {
+    path: 'register',
+    loadComponent: () => import('./shared/components/registrarse/registrarse.component').then(m => m.RegistrarseComponent)
+  },
+  {
     path: 'admin',
     loadComponent: () => import('./features/admin/admin-layout/admin-layout.component').then(m => m.AdminLayoutComponent),
     children: [
