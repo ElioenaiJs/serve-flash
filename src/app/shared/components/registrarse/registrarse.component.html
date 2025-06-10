@@ -1,1 +1,52 @@
-<p>registrarse works!</p>
+<div class="register-container" fxLayout="column" fxLayoutAlign="center center">
+  <mat-card>
+    <mat-card-title class="text-center">Registrarse</mat-card-title>
+    <mat-card-content>
+      <form>
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Nombre Completo</mat-label>
+          <input matInput type="text" name="fullName" placeholder="Tu nombre" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Correo Electrónico</mat-label>
+          <input matInput type="email" name="email" placeholder="correo@ejemplo.com" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Contraseña</mat-label>
+          <input matInput placeholder="Contraseña" required minlength="6">
+          <button mat-icon-button matSuffix type="button">
+            <mat-icon></mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100 mb-3">
+          <mat-label>Confirmar Contraseña</mat-label>
+          <input matInput name="confirmPassword"  placeholder="Confirmar contraseña" required minlength="6">
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" class="w-100 mb-3">
+          Registrarse
+        </button>
+      </form>
+
+      <div class="separator" fxLayout="row" fxLayoutAlign="center center">
+        <span>o</span>
+      </div>
+
+      <button mat-stroked-button color="warn" class="w-100">
+        <mat-icon svgIcon="google" style="margin-right: 8px;"></mat-icon> Registrarse con Google
+      </button>
+    </mat-card-content>
+    <mat-card-actions>
+      <p class="text-center w-100">
+        ¿Ya tienes cuenta? 
+        <a routerLink="/login" routerLinkActive="active">Inicia sesión</a>
+      </p>
+    </mat-card-actions>
+    <mat-card-footer >
+      
+    </mat-card-footer>
+  </mat-card>
+</div>

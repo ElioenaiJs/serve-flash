@@ -1,11 +1,32 @@
 import { Component } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Router } from '@angular/router';
+import firebase from 'firebase/compat/app';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-registrarse',
-  imports: [],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    RouterModule
+  ],
   templateUrl: './registrarse.component.html',
-  styleUrl: './registrarse.component.scss'
+  styleUrls: ['./registrarse.component.scss']
 })
 export class RegistrarseComponent {
-
+  
 }
