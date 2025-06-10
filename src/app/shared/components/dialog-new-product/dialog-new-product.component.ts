@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { ProductService } from '../../../core';
 
 @Component({
   selector: 'app-dialog-new-product',
@@ -28,16 +29,18 @@ export class DialogNewProductComponent {
   public dialogRef = inject(MatDialogRef<DialogNewProductComponent>);
   public data = inject(MAT_DIALOG_DATA, { optional: true });
   public fb = inject(FormBuilder);
+  private productService = inject(ProductService);
 
   public productForm = this.fb.group({
     name: ['', [Validators.required, Validators.maxLength(50)]],
     description: ['', [Validators.required, Validators.maxLength(200)]],
-    price: ['', [Validators.required, Validators.min(0)]],
+    price: [0, [Validators.required, Validators.min(0)]],
     image: [null as File | null, [Validators.required]],
     category: ['', [Validators.required]]
   });
 
   public imagePreview: string | ArrayBuffer | null = null;
+  public isSubmitting = false;
 
   public onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -54,9 +57,29 @@ export class DialogNewProductComponent {
     }
   }
 
-  public onSubmit(): void {
-    if (this.productForm.valid) {
-      this.dialogRef.close(this.productForm.value);
+  public async onSubmit(): Promise<void> {
+    if (this.productForm.valid && !this.isSubmitting) {
+      this.isSubmitting = true;
+
+      try {
+        const formValue = this.productForm.value;
+
+        const imageUrl = 'https://example.com/image.jpg';
+
+        await this.productService.createProduct({
+          name: formValue.name!,
+          description: formValue.description!,
+          price: formValue.price!,
+          categories: [formValue.category!],
+        }, imageUrl);
+
+        this.dialogRef.close(true);
+      } catch (error) {
+        console.error('Error al crear el producto:', error);
+
+      } finally {
+        this.isSubmitting = false;
+      }
     }
   }
 

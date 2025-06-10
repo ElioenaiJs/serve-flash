@@ -1,23 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Database, get, onValue, query, ref } from '@angular/fire/database';
+import { inject, Injectable } from '@angular/core';
+import { Database, get, onValue, query, ref, push, set } from '@angular/fire/database';
 import { BehaviorSubject, filter, from, map, Observable, switchMap, take } from 'rxjs';
 import { Product } from '../models/product.model';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+  private db = inject(Database);
   private connected = new BehaviorSubject<boolean>(false);
-  private productsRef: AngularFireList<any>;
 
-  constructor(private afDb: AngularFireDatabase) {
-    // Usamos la instancia de Database de AngularFireDatabase para la conexión
-    const db = afDb.database;
-    const connectedRef = ref(db, '.info/connected');
-    
-    this.productsRef = afDb.list('products');
-    
+  constructor() {
+    const connectedRef = ref(this.db, '.info/connected');
     onValue(connectedRef, (snapshot) => {
       this.connected.next(snapshot.val() === true);
     });
@@ -28,10 +22,7 @@ export class ProductService {
       filter(isConnected => isConnected),
       take(1),
       switchMap(() => {
-        // Usamos la misma instancia de Database que ya tenemos
-        const db = this.afDb.database;
-        const productsRef = ref(db, 'products');
-        
+        const productsRef = ref(this.db, 'products');
         return from(get(query(productsRef))).pipe(
           map(snapshot => {
             if (!snapshot.exists()) {
@@ -42,7 +33,7 @@ export class ProductService {
             const products: Product[] = [];
             snapshot.forEach(childSnapshot => {
               products.push({
-                id: childSnapshot.key,
+                id: childSnapshot.key as string,
                 ...childSnapshot.val()
               });
             });
@@ -53,26 +44,26 @@ export class ProductService {
     );
   }
 
-  createProduct(productData: Omit<Product, 'id'>): Promise<Product & { id: string }> {
-    const newProduct = {
+  async createProduct(productData: Omit<Product, 'id' | 'isActive' | 'createdAt' | 'images'>, imageUrl: string): Promise<Product & { id: string }> {
+    const newProduct: Product = {
       ...productData,
+      images: [imageUrl], // Convertimos la URL en un array
       isActive: true,
       createdAt: Date.now()
     };
 
-    return this.productsRef.push(newProduct)
-      .then(ref => ({
-        id: ref.key as string,
+    try {
+      const productsRef = ref(this.db, 'products');
+      const newProductRef = push(productsRef);
+      await set(newProductRef, newProduct);
+      
+      return {
+        id: newProductRef.key as string,
         ...newProduct
-      }))
-      .catch(error => {
-        console.error('Error creating product:', error);
-        throw error;
-      });
-  }
-
-  // Método adicional para obtener el estado de conexión si es necesario
-  getConnectionStatus(): Observable<boolean> {
-    return this.connected.asObservable();
-  }
+      };
+    } catch (error) {
+      console.error('Error creating product:', error);
+      throw error;
+    }
+}
 }

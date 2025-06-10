@@ -1,14 +1,10 @@
 export interface Product {
   id?: string;
-  categories: string[];
-  createdAt: number;
+  name: string;
   description: string;
+  price: number;
+  categories: string[];
   images: string[];
   isActive: boolean;
-  name: string;
-  price: number;
-}
-
-export interface ProductDictionary {
-  [key: string]: Omit<Product, 'id'>;
+  createdAt: number;
 }
