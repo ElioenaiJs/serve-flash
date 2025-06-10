@@ -51,13 +51,17 @@
                 (click)="handleAddToCart(product)"
                 [matTooltip]="addedItems[product.id] ? '¡Agregado al carrito!' : 'Agregar al carrito'"
               >
-                <!-- @if (addedItems[product.id]) {
-                  <mat-icon>check</mat-icon>
-                  Agregado
+                @if (addedItems[product.id]) {
+                  <ng-container>
+                    <mat-icon>check</mat-icon>
+                    Agregado
+                  </ng-container>
                 } @else {
-                  <mat-icon>add</mat-icon>
-                  Agregar
-                } -->
+                  <ng-container>
+                    <mat-icon>add</mat-icon>
+                    Agregar
+                  </ng-container>
+                }
               </button>
             </mat-card-actions>
           </mat-card>

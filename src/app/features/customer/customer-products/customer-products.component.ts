@@ -1,5 +1,5 @@
 // customer-products.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { menuCategories, Product, products } from './customer-products';
+import { ProductService } from '../../../core';
 
 @Component({
   selector: 'app-client-products',
@@ -26,13 +27,30 @@ import { menuCategories, Product, products } from './customer-products';
 })
 export class CustomerProductsComponent implements OnInit {
   selectedCategory = 'Todos los productos';
+  private readonly productService = inject(ProductService);
+  public products: any[] = [];
+  public loading = true;
+  public error: string | null = null;
   addedItems: Record<number, boolean> = {};
-  products = products;
   menuCategories = menuCategories;
 
   ngOnInit() {
-    this.products;
-    console.log('Productos cargados:', this.products);
+    this.fetchProducts();
+  }
+
+  public fetchProducts() {
+    this.productService.getProducts().subscribe({
+      next: (products) => {
+        this.products = products;
+        this.loading = false;
+        console.log(products);
+      },
+      error: (err) => {
+        this.error = 'Error al cargar productos';
+        this.loading = false;
+        console.error(err);
+      }
+    });
   }
 
   get filteredProducts(): Product[] {
