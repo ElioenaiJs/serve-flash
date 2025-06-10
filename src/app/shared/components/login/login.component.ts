@@ -35,12 +35,39 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.invalid) return;
-
+  
     const { email, password } = this.loginForm.value;
     console.log('Login data:', { email, password });
-
-    this.authService.login(email!, password!).subscribe(() => {
-      this.router.navigate(['/admin']); // o ruta deseada tras login
+  
+    this.authService.login(email!, password!).subscribe({
+      next: (userData) => {
+        // Guardar el token en sessionStorage
+        localStorage.setItem('token', userData.token);
+  
+        // Obtener el rol del usuario desde Firestore
+        this.authService.getUserRole(userData.uid).subscribe({
+          next: (role) => {
+            console.log('Rol del usuario:', role);
+            // Redirigir según el rol
+            if (role === 'admin') {
+              this.router.navigate(['/admin']);
+            } else if (role === 'customer') {
+              this.router.navigate(['/customer/products']);
+            } else {
+              this.router.navigate(['/**']);
+            }
+          },
+          error: (err) => {
+            console.error('Error al obtener el rol:', err.message);
+            // Si no hay rol definido, lo mandamos al dashboard por defecto
+            this.router.navigate(['/dashboard']);
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error al iniciar sesión:', err.message);
+      }
     });
   }
+  
 }

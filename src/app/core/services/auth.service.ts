@@ -32,18 +32,16 @@ export class AuthService {
   /**
    * Login del usuario y obtención de su perfil desde Firestore.
    */
-  login(email: string, password: string): Observable<any> {
+  login(email: string, password: string) {
     return from(signInWithEmailAndPassword(this.auth, email, password)).pipe(
-      switchMap(({ user }) => {
-        if (!user) throw new Error('Usuario no encontrado');
-        const userRef = doc(this.firestore, 'users', user.uid);
-        return from(getDoc(userRef)).pipe(
-          map(docSnap => {
-            if (!docSnap.exists()) throw new Error('Datos de usuario no encontrados');
-            const userData = docSnap.data();
-            localStorage.setItem('user', JSON.stringify(userData));
-            return userData;
-          })
+      switchMap(userCredential => {
+        if (!userCredential.user) throw new Error('No se encontró el usuario');
+        return from(userCredential.user.getIdToken()).pipe(
+          map(token => ({
+            uid: userCredential.user.uid,
+            email: userCredential.user.email,
+            token
+          }))
         );
       })
     );
@@ -62,5 +60,16 @@ export class AuthService {
    */
   isAuthenticated(): boolean {
     return !!this.auth.currentUser;
+  }
+
+  getUserRole(uid: string): Observable<string> {
+    const userDocRef = doc(this.firestore, `users/${uid}`);
+    return from(getDoc(userDocRef)).pipe(
+      map(snapshot => {
+        const data = snapshot.data();
+        if (!data || !data['role']) throw new Error('No se encontró el rol del usuario');
+        return data['role'];
+      })
+    );
   }
 }
