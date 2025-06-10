@@ -18,14 +18,13 @@ import { menuItems, products } from './admin-products';
 export class AdminProductsComponent implements OnInit {
   public readonly dialog = inject(MatDialog);
   private readonly productService = inject(ProductService);
-  public productss: any[] = [];
+  public products: any[] = [];
   public loading = true;
   public error: string | null = null;
   public product: any[] = [];
   public isMenuOpen = true;
   public showFiller = false;
   public menuItems = menuItems;
-  public products = products;
 
   ngOnInit() {
     this.fetchProducts();
@@ -34,7 +33,7 @@ export class AdminProductsComponent implements OnInit {
   public fetchProducts() {
     this.productService.getProducts().subscribe({
       next: (products) => {
-        this.productss = products;
+        this.products = products;
         this.loading = false;
         console.log(products);
       },
@@ -50,7 +49,9 @@ export class AdminProductsComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogNewProductComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      if (result) {
+        this.fetchProducts();
+      }
     });
   }
 }
