@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { Router } from '@angular/router';
-import firebase from 'firebase/compat/app';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,8 +21,8 @@ import { RouterModule } from '@angular/router';
     MatInputModule,
     RouterModule
   ],
-  templateUrl: './registrarse.component.html',
-  styleUrls: ['./registrarse.component.scss']
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
 export class RegistrarseComponent {
   

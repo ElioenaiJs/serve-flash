@@ -7,7 +7,7 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    loadComponent: () => import('./shared/components/registrarse/registrarse.component').then(m => m.RegistrarseComponent)
+    loadComponent: () => import('./shared/components/register/register.component').then(m => m.RegistrarseComponent)
   },
   {
     path: 'admin',
