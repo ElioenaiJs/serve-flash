@@ -7,6 +7,7 @@ import { MatFormField } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatLabel } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-login',
   imports: [MatButtonModule, MatIconModule, MatCardModule, MatError,MatFormField, MatInput, MatLabel, CommonModule],
