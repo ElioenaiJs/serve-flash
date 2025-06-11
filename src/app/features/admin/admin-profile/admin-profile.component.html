@@ -1,0 +1,55 @@
+<div class="profile-container">
+  <mat-card class="profile-card">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <img [src]="user?.photoURL || 'assets/images/default-avatar.png'" alt="Foto de perfil">
+      </div>
+      <h2>{{user?.displayName || 'Usuario'}}</h2>
+      <p class="user-role">{{user?.role || 'Administrador'}}</p>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="profile-info">
+      <div class="info-section">
+        <h3>Información Personal</h3>
+        <div class="info-row">
+          <div class="info-label">Nombre Completo:</div>
+          <div class="info-value">{{user?.displayName}}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Correo Electrónico:</div>
+          <div class="info-value">{{user?.email}}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Teléfono:</div>
+          <div class="info-value">{{user?.phone || 'No especificado'}}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Ubicación:</div>
+          <div class="info-value">{{user?.location || 'No especificada'}}</div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="info-section">
+        <h3>Información de la Cuenta</h3>
+        <div class="info-row">
+          <div class="info-label">Rol:</div>
+          <div class="info-value">{{user?.role}}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Estado:</div>
+          <div class="info-value">
+    
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Miembro desde:</div>
+          <div class="info-value">{{user?.createdAt | date:'longDate':'':'es'}}</div>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
