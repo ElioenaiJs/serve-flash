@@ -8,7 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { menuCategories, Product, products } from './customer-products';
-import { ProductService } from '../../../core';
+import { CartService, ProductService } from '../../../core';
 
 @Component({
   selector: 'app-client-products',
@@ -28,11 +28,14 @@ import { ProductService } from '../../../core';
 export class CustomerProductsComponent implements OnInit {
   selectedCategory = 'Todos los productos';
   private readonly productService = inject(ProductService);
+  private readonly cartService = inject(CartService);
   public products: any[] = [];
   public loading = true;
   public error: string | null = null;
-  addedItems: Record<number, boolean> = {};
+  addedItems: Record<string, boolean> = {};
   menuCategories = menuCategories;
+
+
 
   ngOnInit() {
     this.fetchProducts();
@@ -61,6 +64,7 @@ export class CustomerProductsComponent implements OnInit {
   }
 
   handleAddToCart(product: Product): void {
+    this.cartService.addToCart(product);
     this.addedItems[product.id] = true;
     setTimeout(() => {
       this.addedItems[product.id] = false;

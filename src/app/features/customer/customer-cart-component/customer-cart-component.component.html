@@ -1,1 +1,80 @@
-<p>client-cart-component works!</p>
+<mat-card class="mat-elevation-z0">
+  <mat-card-header>
+    <mat-card-title>
+      <h2>Ordenar</h2>
+    </mat-card-title>
+  </mat-card-header>
+
+  @if (cartItems$ | async; as items) {
+    @if (items.length === 0) {
+      <div class="empty-cart">
+        <mat-icon class="empty-cart-icon">shopping_cart</mat-icon>
+        <p class="empty-cart-title">Tu carrito está vacío</p>
+        <p class="empty-cart-subtitle">Agrega productos desde el menú</p>
+      </div>
+    } @else {
+      <mat-list>
+        @for (item of items; track item.product.id) {
+          <mat-list-item>
+            <img
+              mat-list-avatar
+              [src]="item.product.images[0]"
+              [alt]="item.product.name"
+            />
+            <div mat-line>
+              <h3>{{ item.product.name }}</h3>
+            </div>
+            <div mat-line class="product-description">
+              {{ item.product.description }}
+            </div>
+
+            <div class="item-controls">
+              <mat-form-field appearance="outline" class="quantity-input">
+                <input
+                  matInput
+                  type="number"
+                  [value]="item.quantity"
+                  (change)="updateQuantity(item.product.id, $event)"
+                  min="1"
+                />
+              </mat-form-field>
+
+              <span class="item-price">
+                ${{ (item.product.price * item.quantity).toFixed(2) }}
+              </span>
+
+              <button
+                mat-icon-button
+                (click)="removeItem(item.product.id)"
+                color="warn"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        }
+      </mat-list>
+
+      <mat-card class="total-card">
+        <mat-card-content>
+          <div class="total-summary">
+            <h3>Total:</h3>
+            <span class="total-amount">
+              ${{ (total$ | async)?.toFixed(2) }}
+            </span>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions class="action-buttons">
+          <button mat-stroked-button (click)="clearCart()" color="warn">
+            Vaciar Carrito
+          </button>
+          <button mat-raised-button color="primary" (click)="checkout()">
+            Ordenar
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    }
+  }
+</mat-card>

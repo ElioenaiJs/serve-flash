@@ -1,0 +1,64 @@
+.empty-cart {
+  text-align: center;
+
+  &-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+  }
+
+  &-title {
+    font-size: 18px;
+    margin: 8px 0;
+  }
+
+  &-subtitle {
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.product-description {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+}
+
+.item-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.quantity-input {
+  width: 80px;
+}
+
+.item-price {
+  font-weight: 500;
+  min-width: 80px;
+  text-align: right;
+}
+
+.total-card {
+  margin-top: 24px;
+}
+
+.total-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    font-weight: 500;
+  }
+
+  .total-amount {
+    font-size: 20px;
+    font-weight: 700;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
