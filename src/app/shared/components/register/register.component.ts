@@ -75,4 +75,16 @@ export class RegisterComponent {
     return this.registerForm.hasError('passwordsMismatch') &&
            this.registerForm.get('confirmPassword')?.touched!;
   }
+
+  registerWithGoogle() {
+    this.authService.signInWithGoogle().subscribe({
+      next: (result) => {
+        this.router.navigate(['/login']); // o donde quieras llevar al usuario
+      },
+      error: (err) => {
+        this.errorMessage = 'Error al registrarse con Google.';
+        console.error(err);
+      }
+    });
+  }
 }

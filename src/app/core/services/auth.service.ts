@@ -1,6 +1,7 @@
 import { inject, Injectable } from "@angular/core";
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "@angular/fire/auth";
+import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword } from "@angular/fire/auth";
 import { Firestore, doc, setDoc, getDoc } from "@angular/fire/firestore";
+import { signInWithPopup } from "firebase/auth";
 import { from, map, Observable, switchMap } from "rxjs";
 
 @Injectable({
@@ -72,4 +73,32 @@ export class AuthService {
       })
     );
   }
+
+  signInWithGoogle(): Observable<void> {
+    const provider = new GoogleAuthProvider();
+    return from(signInWithPopup(this.auth, provider)).pipe(
+      switchMap(({ user }) => {
+        if (!user) throw new Error('No se encontró el usuario en Google');
+  
+        const userRef = doc(this.firestore, 'users', user.uid);
+  
+        return from(getDoc(userRef)).pipe(
+          switchMap(snapshot => {
+            if (snapshot.exists()) {
+              // Usuario ya registrado en Firestore, no hace falta crearlo
+              return from(Promise.resolve());
+            } else {
+              // Usuario nuevo, lo registramos con rol default
+              return from(setDoc(userRef, {
+                email: user.email,
+                username: user.displayName,
+                role: 'customer' // asigna el rol que quieras aquí
+              }));
+            }
+          })
+        );
+      })
+    );
+  }
+  
 }
