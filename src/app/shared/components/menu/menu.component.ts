@@ -43,6 +43,8 @@ export class MenuComponent {
     { name: 'Carrito', icon: 'shopping_cart', route: '/customer/cart' }
   ];
 
+  menuKitchenItems = [
+    { name: '', icon: '', route: '' }];
 
   quickActions = [
     { name: 'Nuevo Producto', icon: 'add_circle', action: 'addProduct' },
