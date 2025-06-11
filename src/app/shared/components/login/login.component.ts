@@ -69,5 +69,37 @@ export class LoginComponent {
       }
     });
   }
+
+  loginWithGoogle(): void {
+    this.authService.signInWithGoogle().subscribe({
+      next: () => {
+        const currentUser = this.authService['auth'].currentUser;
+        if (!currentUser) {
+          console.error('No se pudo obtener el usuario actual');
+          return;
+        }
+  
+        this.authService.getUserRole(currentUser.uid).subscribe({
+          next: (role) => {
+            console.log('Rol del usuario (Google):', role);
+            if (role === 'admin') {
+              this.router.navigate(['/admin']);
+            } else if (role === 'customer') {
+              this.router.navigate(['/customer/products']);
+            } else {
+              this.router.navigate(['/dashboard']);
+            }
+          },
+          error: (err) => {
+            console.error('Error al obtener el rol:', err.message);
+            this.router.navigate(['/login']);
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error al iniciar sesión con Google:', err.message);
+      }
+    });
+  }  
   
 }

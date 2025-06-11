@@ -26,6 +26,12 @@
     </mat-card-content>
 
     <mat-card-actions class="text-center">
+      <div class="text-center mt-3">
+        <button mat-stroked-button color="accent" (click)="loginWithGoogle()">
+          Iniciar sesión con Google
+        </button>
+      </div>
+      
       <p>¿No tienes cuenta?
         <a routerLink="/register">Regístrate</a>
       </p>
