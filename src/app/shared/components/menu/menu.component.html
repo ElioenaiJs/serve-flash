@@ -4,71 +4,22 @@
     <span class="app-name">ServeFlash</span>
   </div>
 
-  <!-- Espacio intermedio -->
   <span class="spacer"></span>
 
-  <!-- Barra de navegación -->
-  <nav class="nav-menu">
-  @for (item of menuItemsClient; track $index) {
-    <a mat-button [routerLink]="item.route">
+  <!-- Botón hamburguesa visible en móvil -->
+  <button mat-icon-button class="mobile-menu-button" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <!-- Menú de navegación: en escritorio se muestra siempre y en móvil solo si está visible -->
+  <nav class="nav-menu" [class.mobile-visible]="menuVisible">
+    <a mat-button *ngFor="let item of menuItemsClient" [routerLink]="item.route">
       <mat-icon>{{item.icon}}</mat-icon>
       {{item.name}}
     </a>
-  }
-</nav>
+  </nav>
 
-  <!-- Acciones rápidas y notificaciones -->
   <div class="actions">
-    <!-- Menú de acciones rápidas -->
-    <button mat-icon-button [matMenuTriggerFor]="quickMenu">
-      <mat-icon>bolt</mat-icon>
-    </button>
-    <mat-menu #quickMenu="matMenu">
-        @for (action of quickActions; track $index) {
-        <button mat-menu-item (click)="onQuickAction(action.action)">
-          <mat-icon>{{action.icon}}</mat-icon>
-          <span>{{action.name}}</span>
-        </button>
-        }
-    </mat-menu>
-
-    <!-- Notificaciones -->
-    <button mat-icon-button [matMenuTriggerFor]="notifications">
-      <mat-icon matBadge="3" matBadgeColor="warn" aria-hidden="false">notifications</mat-icon>
-    </button>
-    <mat-menu #notifications="matMenu">
-      <div class="notification-menu">
-        <h3>Notificaciones</h3>
-        <mat-divider></mat-divider>
-        <button mat-menu-item>
-          <mat-icon>warning</mat-icon>
-          <span>Productos con bajo stock</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>payment</mat-icon>
-          <span>Ventas pendientes</span>
-        </button>
-      </div>
-    </mat-menu>
-
-    <!-- Perfil de usuario -->
-    <button mat-button [matMenuTriggerFor]="profileMenu">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #profileMenu="matMenu">
-      <button mat-menu-item routerLink="/admin/profile">
-        <mat-icon>person</mat-icon>
-        <span>Mi perfil</span>
-      </button>
-      <button mat-menu-item routerLink="/admin/settings">
-        <mat-icon>settings</mat-icon>
-        <span>Configuración</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Cerrar sesión</span>
-      </button>
-    </mat-menu>
+    <!-- Acciones rápidas -->
   </div>
 </mat-toolbar>
