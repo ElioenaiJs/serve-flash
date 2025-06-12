@@ -1,4 +1,9 @@
 <mat-toolbar color="primary" class="admin-toolbar">
+  <!-- Botón hamburguesa visible solo en móvil -->
+  <button mat-icon-button class="mobile-menu-button" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
   <div class="branding" routerLink="/admin/dashboard">
     <mat-icon class="logo-icon">admin_panel_settings</mat-icon>
     <span class="app-name">ServeFlash</span>
@@ -6,28 +11,45 @@
 
   <span class="spacer"></span>
 
-
-  <button mat-icon-button class="mobile-menu-button" (click)="toggleMenu()">
-    <mat-icon>menu</mat-icon>
-  </button>
-
   <nav class="nav-menu" [class.mobile-visible]="menuVisible">
-    <a mat-button [routerLink]="menuItemsClient[0].route">
-      <mat-icon>{{menuItemsClient[0].icon}}</mat-icon>
-      {{menuItemsClient[0].name}}
+    <!-- Aquí van las opciones del menú -->
+    <a mat-button routerLink="/admin/dashboard" routerLinkActive="active-link">
+      <mat-icon>dashboard</mat-icon>
+      <span>Dashboard</span>
     </a>
-    <a mat-button [routerLink]="menuItemsClient[1].route">
-      <mat-icon>{{menuItemsClient[1].icon}}</mat-icon>
-      {{menuItemsClient[1].name}}
+    <a mat-button routerLink="/admin/products" routerLinkActive="active-link">
+      <mat-icon>inventory</mat-icon>
+      <span>Productos</span>
     </a>
-    <a mat-button [routerLink]="menuItemsClient[2].route">
-      <mat-icon>{{menuItemsClient[2].icon}}</mat-icon>
-      {{menuItemsClient[2].name}}
+    <a mat-button routerLink="/admin/users" routerLinkActive="active-link">
+      <mat-icon>people</mat-icon>
+      <span>Usuarios</span>
     </a>
-    
+    <!-- Puedes mantener las demás opciones… -->
   </nav>
 
-  <div class="actions">
-
+  <div class="profile-menu" [class.admin-menu]="isAdmin">
+    <button mat-icon-button [matMenuTriggerFor]="userMenu" class="admin-only">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <button mat-icon-button (click)="logout()" class="user-only">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
+
+<mat-menu #userMenu="matMenu" class="profile-dropdown">
+  <button mat-menu-item routerLink="/profile">
+    <mat-icon>person</mat-icon>
+    <span>Mi Perfil</span>
+  </button>
+  <button mat-menu-item routerLink="/settings">
+    <mat-icon>settings</mat-icon>
+    <span>Configuración</span>
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>exit_to_app</mat-icon>
+    <span>Cerrar Sesión</span>
+  </button>
+</mat-menu>

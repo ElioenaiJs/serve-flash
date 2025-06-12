@@ -50,6 +50,7 @@ export class MenuComponent {
     { name: 'Nuevo Producto', icon: 'add_circle', action: 'addProduct' },
     { name: 'Agregar Usuario', icon: 'person_add', action: 'addUser' }
   ];
+isAdmin: any;
 
   onQuickAction(action: string) {
     console.log('Acción rápida:', action);
