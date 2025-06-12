@@ -11,11 +11,16 @@
 
   <span class="spacer"></span>
 
+
+
+
+  <!-- Menú de navegación: en escritorio se muestra siempre y en móvil solo si está visible -->
   <nav class="nav-menu" [class.mobile-visible]="menuVisible">
-    <!-- Aquí van las opciones del menú -->
-    <a mat-button routerLink="/admin/dashboard" routerLinkActive="active-link">
-      <mat-icon>dashboard</mat-icon>
-      <span>Dashboard</span>
+    <a mat-button *ngFor="let item of menuItemsClient" [routerLink]="item.route">
+
+      <mat-icon>{{item.icon}}</mat-icon>
+      {{item.name}}
+      
     </a>
     <a mat-button routerLink="/admin/products" routerLinkActive="active-link">
       <mat-icon>inventory</mat-icon>
