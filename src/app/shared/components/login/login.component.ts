@@ -54,13 +54,13 @@ export class LoginComponent {
             } else if (role === 'customer') {
               this.router.navigate(['/customer/products']);
             } else {
-              this.router.navigate(['/**']);
+              this.router.navigate(['/kitchen']);
             }
           },
           error: (err) => {
             console.error('Error al obtener el rol:', err.message);
             // Si no hay rol definido, lo mandamos al dashboard por defecto
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/kitchen']);
           }
         });
       },
@@ -87,7 +87,7 @@ export class LoginComponent {
             } else if (role === 'customer') {
               this.router.navigate(['/customer/products']);
             } else {
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/kitchen']);
             }
           },
           error: (err) => {
