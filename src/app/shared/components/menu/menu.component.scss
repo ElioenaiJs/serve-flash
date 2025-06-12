@@ -5,8 +5,9 @@
   top: 0;
   z-index: 100;
   display: flex;
-  justify-content: space-between;
-  padding: 0 24px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0 1rem;
   height: 64px;
 
   .branding {
@@ -26,14 +27,14 @@
   }
 
   .spacer {
-    flex: 1;
+    flex: 1 1 auto;
   }
 
   .nav-menu {
     display: flex;
-    gap: 4px;
 
     a {
+      margin: 0 0.5rem;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -50,6 +51,11 @@
         background-color: rgba(255, 255, 255, 0.2);
       }
     }
+
+    @media (max-width: 768px) {
+      /* Ocultamos la barra de navegación en pantallas pequeñas */
+      display: none;
+    }
   }
 
   .actions {
@@ -57,6 +63,11 @@
     align-items: center;
     gap: 8px;
     margin-left: 16px;
+
+    @media (max-width: 768px) {
+      /* Ajuste de márgenes para pantallas pequeñas */
+      margin-top: 0.5rem;
+    }
   }
 }
 
@@ -74,4 +85,11 @@
 
 .mat-icon{
   color: white;
+}
+
+@media (max-width: 768px) {
+  .admin-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
