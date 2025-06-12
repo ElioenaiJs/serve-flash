@@ -1,32 +1,27 @@
 <div class="profile-container">
-<<<<<<< HEAD
+
   <mat-card class="profile-card" *ngIf="user">
+
     <div class="profile-header">
       <div class="profile-avatar">
         <img [src]="user.photoURL || 'assets/images/default-avatar.png'" alt="Foto de perfil">
       </div>
+
+
       <h2>{{ user.displayName || 'Usuario de Firebase' }}</h2>
      
         <mat-chip color="primary" selected>
           {{ user.providerId === 'password' ? 'Email/Password' : user.providerId }}
         </mat-chip>
 
-=======
-  <mat-card class="profile-card">
-    <div class="profile-header">
-      <div class="profile-avatar">
-        <img [src]="user?.photoURL || 'assets/images/default-avatar.png'" alt="Foto de perfil">
-      </div>
-      <h2>{{user?.displayName || 'Usuario'}}</h2>
-      <p class="user-role">{{user?.role || 'Administrador'}}</p>
->>>>>>> c9da3ae (perfil de usuario)
+
     </div>
 
     <mat-divider></mat-divider>
 
     <div class="profile-info">
       <div class="info-section">
-<<<<<<< HEAD
+
         <h3>Información de Firebase Auth</h3>
         
         <div class="info-row">
@@ -47,35 +42,29 @@
         <div class="info-row">
           <div class="info-label">Proveedor:</div>
           <div class="info-value">{{ user.providerId || 'No especificado' }}</div>
-=======
+
         <h3>Información Personal</h3>
-        <div class="info-row">
-          <div class="info-label">Nombre Completo:</div>
-          <div class="info-value">{{user?.displayName}}</div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Correo Electrónico:</div>
-          <div class="info-value">{{user?.email}}</div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Teléfono:</div>
-          <div class="info-value">{{user?.phone || 'No especificado'}}</div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Ubicación:</div>
-          <div class="info-value">{{user?.location || 'No especificada'}}</div>
-        </div>
-      </div>
 
-      <mat-divider></mat-divider>
+        <h3>Información de Firebase Auth</h3>
+        
 
-      <div class="info-section">
-        <h3>Información de la Cuenta</h3>
         <div class="info-row">
-          <div class="info-label">Rol:</div>
-          <div class="info-value">{{user?.role}}</div>
+          <div class="info-label">UID:</div>
+          <div class="info-value">{{ user.uid }}</div>
         </div>
+
         <div class="info-row">
+          <div class="info-label">Email:</div>
+          <div class="info-value">{{ user.email || 'No especificado' }}</div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-label">Nombre:</div>
+          <div class="info-value">{{ user.displayName || 'No especificado' }}</div>
+        </div>
+
+        <div class="info-row">
+
           <div class="info-label">Estado:</div>
           <div class="info-value">
     
@@ -84,12 +73,16 @@
         <div class="info-row">
           <div class="info-label">Miembro desde:</div>
           <div class="info-value">{{user?.createdAt | date:'longDate':'':'es'}}</div>
->>>>>>> c9da3ae (perfil de usuario)
+
+
+          <div class="info-label">Proveedor:</div>
+          <div class="info-value">{{ user.providerId || 'No especificado' }}</div>
+
         </div>
       </div>
     </div>
   </mat-card>
-<<<<<<< HEAD
+
 
   <mat-card class="profile-card" *ngIf="!user">
     <mat-card-content>
@@ -98,6 +91,5 @@
       </div>
     </mat-card-content>
   </mat-card>
-=======
->>>>>>> c9da3ae (perfil de usuario)
+
 </div>

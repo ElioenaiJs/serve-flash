@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
-<<<<<<< HEAD
+
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 
@@ -14,8 +14,6 @@ interface UserProfile {
   photoURL: string | null;
   providerId?: string;
 }
-=======
->>>>>>> c9da3ae (perfil de usuario)
 
 @Component({
   selector: 'app-admin-profile',
@@ -30,7 +28,7 @@ interface UserProfile {
   styleUrls: ['./admin-profile.component.scss']
 })
 export class AdminProfileComponent implements OnInit {
-<<<<<<< HEAD
+
   user: UserProfile | null = null;
 
   constructor(private afAuth: AngularFireAuth) {}
@@ -51,20 +49,5 @@ export class AdminProfileComponent implements OnInit {
         this.user = null;
       }
     });
-=======
-  user = {
-    photoURL: 'assets/images/default-avatar.png',
-    displayName: 'John Doe',
-    email: 'john.doe@example.com',
-    role: 'Administrador',
-    phone: '+1 234 567 890',
-    location: 'Ciudad de México',
-    createdAt: new Date('2023-01-01'),
-    status: 'active'
-  };
 
-  ngOnInit() {
-    // Aquí cargarías los datos reales del usuario
->>>>>>> c9da3ae (perfil de usuario)
   }
-}
