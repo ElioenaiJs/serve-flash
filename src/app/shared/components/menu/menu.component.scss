@@ -1,12 +1,10 @@
 .admin-toolbar {
+  display: flex;
+  align-items: center;
   position: sticky;
   top: 0;
   z-index: 1000;
   background-color: #00704A;
-  color: white;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   padding: 0 1rem;
   height: 64px;
 
@@ -15,41 +13,50 @@
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    
+
     .logo-icon {
-      font-size: 28px;
+      font-size: 24px;
     }
     
     .app-name {
       font-size: 18px;
       font-weight: 500;
+      color: white; 
     }
   }
 
   .spacer {
-    flex: 1 1 auto;
+    flex: 1;
+  }
+
+  .mobile-menu-button {
+    display: none;
+    @media (max-width: 768px) {
+      display: inline-flex;
+      color: white;
+      margin-right: 8px;
+    }
   }
 
   .nav-menu {
     display: flex;
-    flex-direction: row; 
     align-items: center;
+    gap: 16px;
 
     a {
-      padding: 0 16px;
-      height: 64px;
       display: flex;
       align-items: center;
+      gap: 8px;
+      height: 64px;
+      padding: 0 16px;
       color: white;
       text-decoration: none;
-      gap: 8px;
-
-      &:hover {
+      &:hover,
+      &.active-link {
         background-color: rgba(255, 255, 255, 0.1);
       }
-
       mat-icon {
-        margin-right: 8px;
+        font-size: 20px;
       }
     }
 
@@ -60,13 +67,13 @@
       left: 0;
       width: 100%;
       background-color: #00704A;
-      flex-direction: row;
+      flex-direction: row; 
       justify-content: center;
       padding: 8px 0;
-      
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
       &.mobile-visible {
         display: flex;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
 
       a {
@@ -76,21 +83,16 @@
     }
   }
 
-  .actions {
+  .profile-menu {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-left: 16px;
 
-    @media (max-width: 768px) {
-      margin-top: 0.5rem;
+    .admin-only {
+      display: block;
     }
-  }
-
-  .mobile-menu-button {
-    display: none;
-    @media (max-width: 768px) {
-      display: inline-flex;
+    .user-only {
+      display: block;
     }
   }
 }
@@ -109,4 +111,16 @@
 
 .mat-icon{
   color: white;
+}
+
+.profile-menu {
+  &.admin-menu {
+    .admin-only { display: block; }
+    .user-only { display: none; }
+  }
+
+  &:not(.admin-menu) {
+    .admin-only { display: none; }
+    .user-only { display: block; }
+  }
 }
