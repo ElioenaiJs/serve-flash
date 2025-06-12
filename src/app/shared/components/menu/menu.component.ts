@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -26,6 +27,7 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class MenuComponent {
   private router = inject(Router)
+  private authService = inject(AuthService);
   notificationsCount = 5;
   profileMenuOpen = false;
 
@@ -41,6 +43,8 @@ export class MenuComponent {
     { name: 'Carrito', icon: 'shopping_cart', route: '/customer/cart' }
   ];
 
+  menuKitchenItems = [
+    { name: '', icon: '', route: '' }];
 
   quickActions = [
     { name: 'Nuevo Producto', icon: 'add_circle', action: 'addProduct' },
@@ -49,5 +53,11 @@ export class MenuComponent {
 
   onQuickAction(action: string) {
     console.log('Acción rápida:', action);
+  }
+
+  logout() {
+    this.authService.logout();
+    localStorage.removeItem('token');
+    this.router.navigate(['/login']);
   }
 }

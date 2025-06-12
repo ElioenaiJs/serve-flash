@@ -8,6 +8,7 @@ import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { environment } from '../environments/environment';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 export const appConfig: ApplicationConfig = {
   providers: 
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     ScreenTrackingService, 
     provideDatabase(() => getDatabase()), 
     provideMessaging(() => getMessaging()),
-    provideAuth(() => getAuth())  // Add any other providers you need here
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore())
   ]
 };

@@ -7,7 +7,7 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    loadComponent: () => import('./shared/components/register/register.component').then(m => m.RegistrarseComponent)
+    loadComponent: () => import('./shared/components/register/register.component').then(m => m.RegisterComponent)
   },
   {
     path: 'admin',
@@ -56,6 +56,16 @@ export const routes: Routes = [
         path: 'cart',
         loadComponent: () => import('./features/customer/customer-cart-component/customer-cart-component.component').then(m => m.CustomerCartComponentComponent)
       }
+    ]
+  },
+  {
+    path: 'kitchen',
+    loadComponent: () => import('./features/kitchen/kitchen-layout/kitchen-layout.component').then(m => m.KitchenLayoutComponent),
+    children: [
+      {
+        path: 'home',
+        loadComponent: () => import('./features/kitchen/kitchen-home/kitchen-home.component').then(m => m.KitchenHomeComponent)
+      },
     ]
   },
   { path: '**', redirectTo: '' }
