@@ -58,5 +58,15 @@ export const routes: Routes = [
       }
     ]
   },
+  {
+    path: 'kitchen',
+    loadComponent: () => import('./features/kitchen/kitchen-layout/kitchen-layout.component').then(m => m.KitchenLayoutComponent),
+    children: [
+      {
+        path: 'home',
+        loadComponent: () => import('./features/kitchen/kitchen-home/kitchen-home.component').then(m => m.KitchenHomeComponent)
+      },
+    ]
+  },
   { path: '**', redirectTo: '' }
 ];
