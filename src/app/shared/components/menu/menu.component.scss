@@ -46,15 +46,25 @@
       &:hover {
         background-color: rgba(255, 255, 255, 0.1);
       }
-
       &.active-link {
         background-color: rgba(255, 255, 255, 0.2);
       }
     }
 
     @media (max-width: 768px) {
-      /* Ocultamos la barra de navegación en pantallas pequeñas */
+      /* En móvil se oculta el menú por defecto */
       display: none;
+      flex-direction: column;
+      width: 100%;
+      background-color: #00704A;
+      position: absolute;
+      top: 64px;
+      left: 0;
+      z-index: 99;
+    }
+
+    &.mobile-visible {
+      display: flex;
     }
   }
 
@@ -65,8 +75,14 @@
     margin-left: 16px;
 
     @media (max-width: 768px) {
-      /* Ajuste de márgenes para pantallas pequeñas */
       margin-top: 0.5rem;
+    }
+  }
+
+  .mobile-menu-button {
+    display: none;
+    @media (max-width: 768px) {
+      display: inline-flex;
     }
   }
 }
@@ -85,11 +101,4 @@
 
 .mat-icon{
   color: white;
-}
-
-@media (max-width: 768px) {
-  .admin-toolbar {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }

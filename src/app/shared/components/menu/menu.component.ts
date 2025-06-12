@@ -38,9 +38,9 @@ export class MenuComponent {
   ];
 
   menuItemsClient = [
-    { name: 'Inicio', icon: 'home', route: '/customer/home' },
-    { name: 'Productos', icon: 'shopping_bag', route: '/customer/products' },
-    { name: 'Carrito', icon: 'shopping_cart', route: '/customer/cart' }
+    { route: '/admin/dashboard', icon: 'home', name: 'Inicio' },
+    { route: '/admin/products', icon: 'inventory', name: 'Productos' },
+    { route: '/admin/cart', icon: 'shopping_cart', name: 'Carrito' }
   ];
 
   menuKitchenItems = [
@@ -59,5 +59,11 @@ export class MenuComponent {
     this.authService.logout();
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
+  }
+
+  menuVisible = false;
+
+  toggleMenu(): void {
+    this.menuVisible = !this.menuVisible;
   }
 }
