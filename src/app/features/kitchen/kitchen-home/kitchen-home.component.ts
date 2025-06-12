@@ -1,14 +1,15 @@
-import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { Component, inject, signal } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
-import { Observable, of } from 'rxjs';
+import { Order } from '../../../core';
+import { OrderService } from '../../../core/services/order.service';
 
 interface OrderItem {
   product: {
@@ -20,16 +21,9 @@ interface OrderItem {
   notes?: string;
 }
 
-interface Order {
-  id: number;
-  createdAt: Date;
-  completedAt?: Date;
-  preparationTime: number;
-  items: OrderItem[];
-}
-
 @Component({
   selector: 'app-kitchen-home',
+  standalone: true,
   imports: [
     CommonModule,
     MatCardModule,
@@ -42,55 +36,68 @@ interface Order {
     MatTableModule
   ],
   templateUrl: './kitchen-home.component.html',
-  styleUrl: './kitchen-home.component.scss'
+  styleUrls: ['./kitchen-home.component.scss']
 })
 
 export class KitchenHomeComponent {
-  // Usamos signals para el estado
-  receivedOrders = signal<Order[]>([
-    {
-      id: 1,
-      createdAt: new Date(),
-      preparationTime: 15,
-      items: [
-        {
-          product: { id: 1, name: 'Hamburguesa', description: 'Con queso y tocino' },
-          quantity: 2,
-          notes: 'Sin cebolla'
-        }
-      ]
-    }
-  ]);
+  private orderService = inject(OrderService);
+  orders: Order[] = [];
+  loading = true;
+  error: string | null = null;
 
-  preparingOrders = signal<Order[]>([
-    {
-      id: 2,
-      createdAt: new Date(Date.now() - 1000 * 60 * 5),
-      preparationTime: 10,
-      items: [
-        {
-          product: { id: 3, name: 'Pizza', description: 'Jamón y champiñones' },
-          quantity: 1,
-          notes: 'Bien cocida'
-        }
-      ]
-    }
-  ]);
-
+  receivedOrders = signal<Order[]>([]);
+  preparingOrders = signal<Order[]>([]);
   completedOrders = signal<Order[]>([]);
-
   completedOrdersColumns = ['orderId', 'time', 'items'];
+
+  ngOnInit() {
+    this.fetchOrders();
+  }
+
+  public fetchOrders() {
+    this.orderService.getOrders().subscribe({
+      next: (orders) => {
+        this.orders = orders;
+        this.loading = false;
+        this.initializeOrderSignals(orders);
+        console.log('Órdenes cargadas:', orders);
+      },
+      error: (err) => {
+        this.error = 'Error al cargar órdenes';
+        this.loading = false;
+        console.error('Error al obtener órdenes:', err);
+      }
+    });
+  }
+
+  private initializeOrderSignals(orders: Order[]) {
+    // Filtra las órdenes según su estado
+    this.receivedOrders.set(orders.filter(order => order.status === 'pending'));
+    this.preparingOrders.set(orders.filter(order => order.status === 'preparing'));
+    this.completedOrders.set(orders.filter(order => order.status === 'completed'));
+  }
 
   startPreparation(order: Order) {
     this.receivedOrders.update(orders => orders.filter(o => o.id !== order.id));
-    this.preparingOrders.update(orders => [...orders, order]);
+    this.preparingOrders.update(orders => [...orders, { ...order, status: 'preparing' }]);
+    // Aquí deberías también actualizar la orden en el backend
   }
 
   markAsReady(order: Order) {
     this.preparingOrders.update(orders => orders.filter(o => o.id !== order.id));
     this.completedOrders.update(orders => [...orders, {
       ...order,
+      status: 'completed',
       completedAt: new Date()
     }]);
+    // Aquí deberías también actualizar la orden en el backend
   }
+
+  getOrderItems(order: Order): any[] {
+  // Si items es un array, lo devuelve directamente
+  if (Array.isArray(order.items)) return order.items;
+  
+  // Si items es un objeto, lo convierte a array
+  return Object.values(order.items || {});
+}
 }
