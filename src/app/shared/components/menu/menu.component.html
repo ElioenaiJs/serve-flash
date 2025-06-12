@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="admin-toolbar">
-  <!-- Botón hamburguesa visible solo en móvil -->
+
   <button mat-icon-button class="mobile-menu-button" (click)="toggleMenu()">
     <mat-icon>menu</mat-icon>
   </button>
@@ -14,7 +14,7 @@
 
 
 
-  <!-- Menú de navegación: en escritorio se muestra siempre y en móvil solo si está visible -->
+
   <nav class="nav-menu" [class.mobile-visible]="menuVisible">
     <a mat-button *ngFor="let item of menuItemsClient" [routerLink]="item.route">
 
@@ -30,7 +30,7 @@
       <mat-icon>people</mat-icon>
       <span>Usuarios</span>
     </a>
-    <!-- Puedes mantener las demás opciones… -->
+
   </nav>
 
   <div class="profile-menu" [class.admin-menu]="isAdmin">
