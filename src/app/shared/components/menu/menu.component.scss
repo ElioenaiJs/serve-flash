@@ -32,7 +32,7 @@
 
   .nav-menu {
     display: flex;
-    flex-direction: row; // Asegura que los elementos estén en horizontal
+    flex-direction: row; 
     align-items: center;
 
     a {
@@ -60,7 +60,7 @@
       left: 0;
       width: 100%;
       background-color: #00704A;
-      flex-direction: row; // Mantiene horizontal incluso en móvil
+      flex-direction: row;
       justify-content: center;
       padding: 8px 0;
       
