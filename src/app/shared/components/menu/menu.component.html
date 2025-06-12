@@ -11,18 +11,8 @@
 
   <span class="spacer"></span>
 
-<<<<<<< HEAD
-  <nav class="nav-menu" [class.mobile-visible]="menuVisible">
-    <!-- Aquí van las opciones del menú -->
-    <a mat-button routerLink="/admin/dashboard" routerLinkActive="active-link">
-      <mat-icon>dashboard</mat-icon>
-      <span>Dashboard</span>
-=======
 
-  <!-- Botón hamburguesa visible en móvil -->
-  <button mat-icon-button class="mobile-menu-button" (click)="toggleMenu()">
-    <mat-icon>menu</mat-icon>
-  </button>
+
 
   <!-- Menú de navegación: en escritorio se muestra siempre y en móvil solo si está visible -->
   <nav class="nav-menu" [class.mobile-visible]="menuVisible">
@@ -31,7 +21,6 @@
       <mat-icon>{{item.icon}}</mat-icon>
       {{item.name}}
       
->>>>>>> cdab9d25b4dda5d4baadf1a6c51d067ac3900322
     </a>
     <a mat-button routerLink="/admin/products" routerLinkActive="active-link">
       <mat-icon>inventory</mat-icon>
