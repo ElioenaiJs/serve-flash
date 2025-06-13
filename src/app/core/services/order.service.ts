@@ -81,4 +81,33 @@ export class OrderService {
       throw error;
     }
   }
+
+  getOrdersLive(): Observable<Order[]> {
+  const ordersRef = ref(this.db, 'orders');
+
+  return new Observable<Order[]>(subscriber => {
+    const unsubscribe = onValue(ordersRef, (snapshot) => {
+      const orders: Order[] = [];
+
+      snapshot.forEach(childSnapshot => {
+        const orderData = childSnapshot.val();
+        orders.push({
+          id: childSnapshot.key as string,
+          ...orderData,
+          tableNumber: orderData.tablNumber || orderData.tableNumber,
+          preparationTime: orderData.preparationTime || 0
+        });
+      });
+
+      subscriber.next(orders);
+    }, (error) => {
+      console.error('Error al escuchar pedidos:', error);
+      subscriber.error(error);
+    });
+
+    // cleanup
+    return () => unsubscribe();
+  });
+}
+
 }

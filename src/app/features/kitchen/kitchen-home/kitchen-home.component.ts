@@ -51,24 +51,20 @@ export class KitchenHomeComponent {
   completedOrdersColumns = ['orderId', 'time', 'items'];
 
   ngOnInit() {
-    this.fetchOrders();
-  }
+  this.orderService.getOrdersLive().subscribe({
+    next: (orders) => {
+      this.orders = orders;
+      this.loading = false;
+      this.initializeOrderSignals(orders);
+    },
+    error: (err) => {
+      this.error = 'Error al cargar órdenes en tiempo real';
+      this.loading = false;
+      console.error(err);
+    }
+  });
+}
 
-  public fetchOrders() {
-    this.orderService.getOrders().subscribe({
-      next: (orders) => {
-        this.orders = orders;
-        this.loading = false;
-        this.initializeOrderSignals(orders);
-        console.log('Órdenes cargadas:', orders);
-      },
-      error: (err) => {
-        this.error = 'Error al cargar órdenes';
-        this.loading = false;
-        console.error('Error al obtener órdenes:', err);
-      }
-    });
-  }
 
   private initializeOrderSignals(orders: Order[]) {
     // Filtra las órdenes según su estado
