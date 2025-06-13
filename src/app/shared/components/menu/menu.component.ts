@@ -46,9 +46,9 @@ export class MenuComponent implements OnInit, OnDestroy {
   ];
 
   menuItemsClient = [
-    { route: '/admin/dashboard', icon: 'home', name: 'Inicio' },
-    { route: '/admin/products', icon: 'inventory', name: 'Productos' },
-    { route: '/admin/cart', icon: 'shopping_cart', name: 'Carrito' }
+      { name: 'Inicio', icon: 'home', route: '/customer/home' },
+    { name: 'Productos', icon: 'shopping_bag', route: '/customer/products' },
+    { name: 'Carrito', icon: 'shopping_cart', route: '/customer/cart' }
   ];
 
   menuKitchenItems: any[] = [];
