@@ -15,6 +15,7 @@
   <mat-list>
     @for (item of items; track item.product.id) {
     <mat-list-item>
+      <br><br>
       <img
         mat-list-avatar
         [src]="'assets/placeholder.png'"
@@ -64,7 +65,7 @@
       <button mat-stroked-button (click)="clearCart()" color="warn">
         Vaciar Carrito
       </button>
-      <button mat-raised-button color="primary" (click)="checkout()">
+      <button class="custom-button" mat-raised-button color="primary" (click)="checkout()">
         Ordenar
       </button>
     </mat-card-actions>

@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { Router } from '@angular/router';
 import { map } from 'rxjs';
 import { AuthService, CartItem, CartService, CreateOrderRequest, OrderService } from '../../../core';
 
@@ -29,6 +30,7 @@ export class CustomerCartComponentComponent {
   private orderService = inject(OrderService);
   private cartService = inject(CartService);
   private authService = inject(AuthService);
+  private router = inject(Router);
 
   cartItems = this.cartService.cartItems;
 
@@ -66,7 +68,6 @@ export class CustomerCartComponentComponent {
     };
 
     try {
-      console.log('Creando orden con los siguientes datos:', orderData);
       const order = await this.orderService.createOrder(orderData);
       this.cartService.clearCart();
     } catch (error) {
@@ -87,5 +88,9 @@ export class CustomerCartComponentComponent {
 
   public clearCart() {
     this.cartService.clearCart();
+  }
+
+  public navigateToProducts() {
+    this.router.navigate(['/customer/products']);  
   }
 }
