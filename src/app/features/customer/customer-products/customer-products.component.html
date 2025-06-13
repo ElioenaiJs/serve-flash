@@ -27,7 +27,7 @@
       @for (product of filteredProducts; track product.id) {
       <div class="product-card">
         <mat-card class="example-card">
-          <img mat-card-image [src]="product.imageUrl" [alt]="product.title" />
+          <img [src]="product.images[0]" alt="Producto" />
           <mat-chip-option class="category-chip" disabled>
             {{ product.category }}
           </mat-chip-option>
