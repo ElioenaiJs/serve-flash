@@ -28,3 +28,8 @@ app-root {
   flex-direction: column;
   height: 100%;
 }
+
+.custom-snackbar {
+  padding: 0 !important;
+  border-radius: 8px;
+}

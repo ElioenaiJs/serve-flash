@@ -1,0 +1,27 @@
+:host {
+  padding: 16px 24px;
+  display: inline-flex;
+  align-items: center;
+  max-width: 360px;
+  color: #fff;
+  animation: slide-in 300ms ease-out;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.snackbar-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.snackbar-icon {
+  color: #4caf50; 
+  font-size: 24px;
+}
+
+.snackbar-message {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  flex: 1;
+}

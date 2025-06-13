@@ -10,16 +10,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { Order } from '../../../core';
 import { OrderService } from '../../../core/services/order.service';
-
-interface OrderItem {
-  product: {
-    id: number;
-    name: string;
-    description: string;
-  };
-  quantity: number;
-  notes?: string;
-}
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CustomSnackBarComponent } from '../../../shared';
 
 @Component({
   selector: 'app-kitchen-home',
@@ -41,6 +33,7 @@ interface OrderItem {
 
 export class KitchenHomeComponent {
   private orderService = inject(OrderService);
+  private snackBar = inject(MatSnackBar);
   orders: Order[] = [];
   loading = true;
   error: string | null = null;
@@ -77,11 +70,14 @@ export class KitchenHomeComponent {
     if (order.id) {
       this.orderService.updateOrderStatus(order.id, 'preparing')
         .then(() => {
-          console.log(`Orden ${order.id} puesta en preparación`);
+          this.showCustomSnackBar(`Orden para mesa ${order.tableNumber} en preparación`);
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+          console.error(err);
+          this.showCustomSnackBar('Error al iniciar la preparación de la orden');
+        });
     } else {
-      // console.error('La orden no tiene un ID válido (startPreparation)');
+      this.showCustomSnackBar('La orden no tiene un ID válido');
     }
   }
 
@@ -90,12 +86,17 @@ export class KitchenHomeComponent {
       const completedAt = new Date();
       this.orderService.updateOrderStatus(order.id, 'completed', completedAt)
         .then(() => {
-          // console.log(`Orden ${order.id} marcada como completada`);
+          this.showCustomSnackBar(`Orden para mesa ${order.tableNumber} en entrega`);
         })
-        .catch(err => console.error(err));
+        .catch(err => {
+          console.error(err);
+          this.showCustomSnackBar('Error al marcar como completada la orden');
+        });
     } else {
+      this.showCustomSnackBar('La orden no tiene un ID válido');
     }
   }
+
 
 
   getOrderItems(order: Order): any[] {
@@ -105,4 +106,13 @@ export class KitchenHomeComponent {
     // Si items es un objeto, lo convierte a array
     return Object.values(order.items || {});
   }
+
+  showCustomSnackBar(message: string) {
+  this.snackBar.openFromComponent(CustomSnackBarComponent, {
+    data: { message },
+    duration: 4000,
+    horizontalPosition: 'end',
+    verticalPosition: 'top',
+  });
+}
 }
