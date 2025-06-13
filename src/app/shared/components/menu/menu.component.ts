@@ -1,37 +1,31 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
-import { MatBadgeModule } from '@angular/material/badge';
+import { Component, inject } from '@angular/core';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatDividerModule } from '@angular/material/divider';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
   imports: [
-    CommonModule,
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
     MatBadgeModule,
     MatDividerModule,
-    RouterLink,
-    AngularFireAuthModule
+    RouterLink
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
-export class MenuComponent implements OnInit, OnDestroy {
+export class MenuComponent {
   private router = inject(Router);
   private authService = inject(AuthService);
-  private authSubscription: Subscription | undefined;
   
   notificationsCount = 5;
   profileMenuOpen = false;
@@ -39,72 +33,44 @@ export class MenuComponent implements OnInit, OnDestroy {
   isAdmin: boolean = false;
   menuVisible = false;
 
-  menuItems = [
-    { name: 'Dashboard', icon: 'dashboard', route: '/admin/dashboard' },
-    { name: 'Productos', icon: 'inventory_2', route: '/admin/products' },
-    { name: 'Usuarios', icon: 'manage_accounts', route: '/admin/users' }
-  ];
-
-  menuItemsClient = [
-      { name: 'Inicio', icon: 'home', route: '/customer/home' },
+  // Menu items by role
+  menuItems = {
+    admin: [
+      { name: 'Dashboard', icon: 'dashboard', route: '/admin/dashboard' },
+      { name: 'Productos', icon: 'inventory_2', route: '/admin/products' },
+      { name: 'Usuarios', icon: 'manage_accounts', route: '/admin/users' }
+    ],
+    customer: [
+     { name: 'Inicio', icon: 'home', route: '/customer/home' },
     { name: 'Productos', icon: 'shopping_bag', route: '/customer/products' },
     { name: 'Carrito', icon: 'shopping_cart', route: '/customer/cart' }
-  ];
-
-  menuKitchenItems: any[] = [];
+    ],
+    kitchen: []
+  };
 
   quickActions = [
     { name: 'Nuevo Producto', icon: 'add_circle', action: 'addProduct' },
     { name: 'Agregar Usuario', icon: 'person_add', action: 'addUser' }
   ];
 
-  ngOnInit() {
-    this.checkAuthState();
-  }
-
-  ngOnDestroy() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
-  }
-
-  private checkAuthState() {
-    if (this.authService.isAuthenticated()) {
-      this.loadUserRole();
-    } else {
-      // Escuchar cambios en la autenticación si es necesario
-      // Esto dependerá de cómo manejes el estado de autenticación
-    }
+  constructor() {
+    this.loadUserRole();
   }
 
   private loadUserRole() {
-    const currentUser = this.authService['auth'].currentUser; // Acceso directo al usuario de Firebase
+    const currentUser = this.authService['auth'].currentUser;
     if (currentUser) {
-      this.authSubscription = this.authService.getUserRole(currentUser.uid).subscribe({
+      this.authService.getUserRole(currentUser.uid).subscribe({
         next: (role) => {
           this.userRole = role;
           this.isAdmin = this.userRole === 'admin';
         },
-        error: (err) => {
-          console.error('Error al obtener el rol:', err);
+        error: () => {
           this.userRole = 'customer';
           this.isAdmin = false;
         }
       });
     }
-  }
-
-  getMenuItems() {
-    switch (this.userRole) {
-      case 'admin': return this.menuItems;
-      case 'customer': return this.menuItemsClient;
-      case 'kitchen': return this.menuKitchenItems;
-      default: return [];
-    }
-  }
-
-  showQuickActions() {
-    return this.isAdmin;
   }
 
   onQuickAction(action: string) {
@@ -121,7 +87,7 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.router.navigate(['/login']);
   }
 
-  toggleMenu(): void {
+  toggleMenu() {
     this.menuVisible = !this.menuVisible;
   }
 }
