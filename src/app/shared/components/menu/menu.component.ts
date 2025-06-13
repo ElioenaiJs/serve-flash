@@ -41,9 +41,9 @@ export class MenuComponent {
       { name: 'Usuarios', icon: 'manage_accounts', route: '/admin/users' }
     ],
     customer: [
-      { name: 'Inicio', icon: 'home', route: '/admin/dashboard' },
-      { name: 'Productos', icon: 'inventory', route: '/admin/products' },
-      { name: 'Carrito', icon: 'shopping_cart', route: '/admin/cart' }
+     { name: 'Inicio', icon: 'home', route: '/customer/home' },
+    { name: 'Productos', icon: 'shopping_bag', route: '/customer/products' },
+    { name: 'Carrito', icon: 'shopping_cart', route: '/customer/cart' }
     ],
     kitchen: []
   };
