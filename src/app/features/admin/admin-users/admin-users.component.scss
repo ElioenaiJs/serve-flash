@@ -1,32 +1,24 @@
 @use '@angular/material' as mat;
 
-.page-content {
+.full-width-container {
+  width: 100%;
   padding: 16px;
+  box-sizing: border-box;
 }
 
-.add-user-card {
-  margin-bottom: 24px;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-
-  .add-user-form {
-    /* ... (estilos iguales) ... */
-  }
-}
-
-.full-width-table {
+.full-width-card {
   width: 100%;
   margin: 0 auto;
 
-  .table-container {
-    overflow-x: auto;
+  .table-responsive {
     width: 100%;
+    overflow-x: auto;
   }
 
-  .full-width {
+  .full-width-table {
     width: 100%;
-    
+    min-width: 800px; // Mínimo para asegurar buen layout en móviles
+
     th.mat-header-cell, td.mat-cell {
       padding: 12px 16px;
       
@@ -38,8 +30,7 @@
         padding-right: 24px;
       }
     }
-    
-    // Asegurar que las columnas ocupen espacio proporcional
+
     .mat-column-name {
       width: 25%;
     }
@@ -59,51 +50,83 @@
   }
 }
 
-/* ... (otros estilos iguales) ... */
+.no-users-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+
+  mat-spinner {
+    margin-bottom: 16px;
+  }
+}
+
+// Estilos para los formularios en modo edición
+.mat-form-field {
+  width: 100%;
+}
+
+// Espaciado para los botones de acción
+.mat-icon-button {
+  margin: 0 4px;
+}
 
 // Media queries para responsividad
 @media (max-width: 960px) {
   .full-width-table {
-    .full-width {
-      .mat-column-name {
-        width: 30%;
-      }
-      
-      .mat-column-email {
-        width: 30%;
-      }
-      
-      .mat-column-role {
-        width: 20%;
-      }
-      
-      .mat-column-actions {
-        width: 20%;
-      }
+    .mat-column-name {
+      width: 30%;
+    }
+    
+    .mat-column-email {
+      width: 30%;
+    }
+    
+    .mat-column-role {
+      width: 20%;
+    }
+    
+    .mat-column-actions {
+      width: 20%;
     }
   }
 }
 
 @media (max-width: 600px) {
   .full-width-table {
-    .full-width {
-      min-width: 500px; // Permite scroll horizontal en móviles
-      
-      .mat-column-name {
-        width: 35%;
-      }
-      
-      .mat-column-email {
-        width: 35%;
-      }
-      
-      .mat-column-role {
-        width: 15%;
-      }
-      
-      .mat-column-actions {
-        width: 15%;
-      }
+    min-width: 600px; // Permite scroll horizontal en móviles
+    
+    .mat-column-name {
+      width: 35%;
+    }
+    
+    .mat-column-email {
+      width: 35%;
+    }
+    
+    .mat-column-role {
+      width: 15%;
+    }
+    
+    .mat-column-actions {
+      width: 15%;
     }
   }
 }

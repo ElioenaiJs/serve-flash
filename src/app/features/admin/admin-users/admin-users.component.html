@@ -2,97 +2,103 @@
   <span>Administración de Usuarios</span>
 </mat-toolbar>
 
-<div class="container">
-
+<div class="full-width-container">
   <!-- Tabla de usuarios -->
-  <mat-card>
+  <mat-card class="full-width-card">
     <mat-card-header>
       <mat-card-title>Lista de Usuarios</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <div *ngIf="users$ | async as users; else loading">
-        <div *ngIf="users.length > 0; else noUsers">
-          <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-            <!-- Nombre Column -->
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef> Nombre </th>
-              <td mat-cell *matCellDef="let user">
-                <span *ngIf="editingUserId !== user.id">{{ user.name }}</span>
-                <mat-form-field *ngIf="editingUserId === user.id" appearance="outline">
-                  <input matInput [(ngModel)]="editUserData.name">
-                </mat-form-field>
-              </td>
-            </ng-container>
+      @if (users$ | async; as users) {
+        @if (users.length > 0) {
+          <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" class="full-width-table">
+              <!-- Nombre Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let user">
+                  @if (editingUserId !== user.id) {
+                    <span>{{ user.username }}</span>
+                  } @else {
+                    <mat-form-field appearance="outline">
+                      <input matInput [(ngModel)]="editUserData.name">
+                    </mat-form-field>
+                  }
+                </td>
+              </ng-container>
 
-            <!-- Email Column -->
-            <ng-container matColumnDef="email">
-              <th mat-header-cell *matHeaderCellDef> Email </th>
-              <td mat-cell *matCellDef="let user">
-                <span *ngIf="editingUserId !== user.id">{{ user.email }}</span>
-                <mat-form-field *ngIf="editingUserId === user.id" appearance="outline">
-                  <input matInput type="email" [(ngModel)]="editUserData.email">
-                </mat-form-field>
-              </td>
-            </ng-container>
+              <!-- Email Column -->
+              <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let user">
+                  @if (editingUserId !== user.id) {
+                    <span>{{ user.email }}</span>
+                  } @else {
+                    <mat-form-field appearance="outline">
+                      <input matInput type="email" [(ngModel)]="editUserData.email">
+                    </mat-form-field>
+                  }
+                </td>
+              </ng-container>
 
-            <!-- Rol Column -->
-            <ng-container matColumnDef="role">
-              <th mat-header-cell *matHeaderCellDef> Rol </th>
-              <td mat-cell *matCellDef="let user">
-                <span *ngIf="editingUserId !== user.id">{{ user.role }}</span>
-                <mat-form-field *ngIf="editingUserId === user.id" appearance="outline">
-                  <mat-select [(ngModel)]="editUserData.role">
-                    <mat-option value="customer">Cliente</mat-option>
-                    <mat-option value="admin">Administrador</mat-option>
-                    <mat-option value="kitchen">Cocina</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </td>
-            </ng-container>
+              <!-- Rol Column -->
+              <ng-container matColumnDef="role">
+                <th mat-header-cell *matHeaderCellDef> Rol </th>
+                <td mat-cell *matCellDef="let user">
+                  @if (editingUserId !== user.id) {
+                    <span>{{ user.role }}</span>
+                  } @else {
+                    <mat-form-field appearance="outline">
+                      <mat-select [(ngModel)]="editUserData.role">
+                        <mat-option value="customer">Cliente</mat-option>
+                        <mat-option value="admin">Administrador</mat-option>
+                        <mat-option value="kitchen">Cocina</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  }
+                </td>
+              </ng-container>
 
-            <!-- Acciones Column -->
-            <ng-container matColumnDef="actions">
-              <th mat-header-cell *matHeaderCellDef> Acciones </th>
-              <td mat-cell *matCellDef="let user">
-                <div *ngIf="editingUserId !== user.id; else editMode">
-                  <button mat-icon-button color="primary" (click)="startEdit(user)" matTooltip="Editar">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button mat-icon-button color="warn" (click)="deleteUser(user.id)" matTooltip="Eliminar">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </div>
-                <ng-template #editMode>
-                  <button mat-icon-button color="primary" (click)="updateUser()" matTooltip="Guardar">
-                    <mat-icon>save</mat-icon>
-                  </button>
-                  <button mat-icon-button color="warn" (click)="cancelEdit()" matTooltip="Cancelar">
-                    <mat-icon>cancel</mat-icon>
-                  </button>
-                </ng-template>
-              </td>
-            </ng-container>
+              <!-- Acciones Column -->
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Acciones </th>
+                <td mat-cell *matCellDef="let user">
+                  @if (editingUserId !== user.id) {
+                    <button mat-icon-button color="primary" (click)="startEdit(user)" matTooltip="Editar">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteUser(user.id)" matTooltip="Eliminar">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  } @else {
+                    <button mat-icon-button color="primary" (click)="updateUser()" matTooltip="Guardar">
+                      <mat-icon>save</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="cancelEdit()" matTooltip="Cancelar">
+                      <mat-icon>cancel</mat-icon>
+                    </button>
+                  }
+                </td>
+              </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
 
           <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-        </div>
-
-        <ng-template #noUsers>
+        } @else {
           <div class="no-users-message">
             <mat-icon>group_off</mat-icon>
             <p>No hay usuarios registrados</p>
           </div>
-        </ng-template>
-      </div>
-
-      <ng-template #loading>
+        }
+      } @else {
         <div class="loading-spinner">
           <mat-spinner diameter="50"></mat-spinner>
           <p>Cargando usuarios...</p>
         </div>
-      </ng-template>
+      }
     </mat-card-content>
   </mat-card>
+</div>
