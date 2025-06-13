@@ -1,0 +1,132 @@
+@use '@angular/material' as mat;
+
+.full-width-container {
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.full-width-card {
+  width: 100%;
+  margin: 0 auto;
+
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .full-width-table {
+    width: 100%;
+    min-width: 800px; // Mínimo para asegurar buen layout en móviles
+
+    th.mat-header-cell, td.mat-cell {
+      padding: 12px 16px;
+      
+      &:first-of-type {
+        padding-left: 24px;
+      }
+      
+      &:last-of-type {
+        padding-right: 24px;
+      }
+    }
+
+    .mat-column-name {
+      width: 25%;
+    }
+    
+    .mat-column-email {
+      width: 35%;
+    }
+    
+    .mat-column-role {
+      width: 20%;
+    }
+    
+    .mat-column-actions {
+      width: 20%;
+      text-align: center;
+    }
+  }
+}
+
+.no-users-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+
+  mat-spinner {
+    margin-bottom: 16px;
+  }
+}
+
+// Estilos para los formularios en modo edición
+.mat-form-field {
+  width: 100%;
+}
+
+// Espaciado para los botones de acción
+.mat-icon-button {
+  margin: 0 4px;
+}
+
+// Media queries para responsividad
+@media (max-width: 960px) {
+  .full-width-table {
+    .mat-column-name {
+      width: 30%;
+    }
+    
+    .mat-column-email {
+      width: 30%;
+    }
+    
+    .mat-column-role {
+      width: 20%;
+    }
+    
+    .mat-column-actions {
+      width: 20%;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .full-width-table {
+    min-width: 600px; // Permite scroll horizontal en móviles
+    
+    .mat-column-name {
+      width: 35%;
+    }
+    
+    .mat-column-email {
+      width: 35%;
+    }
+    
+    .mat-column-role {
+      width: 15%;
+    }
+    
+    .mat-column-actions {
+      width: 15%;
+    }
+  }
+}
