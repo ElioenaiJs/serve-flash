@@ -10,11 +10,14 @@
 
   <span class="spacer"></span>
   
+  <!-- Menú principal  -->
   @switch (userRole) {
     @case ('admin') {
       <nav class="nav-menu" [class.mobile-visible]="menuVisible">
         @for (item of menuItems.admin; track item.name) {
-          <a mat-button [routerLink]="item.route" routerLinkActive="active-link">
+          <a mat-button 
+             [routerLink]="item.route"
+             [class.active-link]="isActive(item.route)">
             <mat-icon>{{item.icon}}</mat-icon>
             <span>{{item.name}}</span>
           </a>
@@ -24,20 +27,18 @@
     @case ('customer') {
       <nav class="nav-menu" [class.mobile-visible]="menuVisible">
         @for (item of menuItems.customer; track item.name) {
-          <a mat-button [routerLink]="item.route" routerLinkActive="active-link">
+          <a mat-button 
+             [routerLink]="item.route"
+             [class.active-link]="isActive(item.route)">
             <mat-icon>{{item.icon}}</mat-icon>
             <span>{{item.name}}</span>
           </a>
         }
       </nav>
     }
-    @case ('kitchen') {
-      <nav class="nav-menu" [class.mobile-visible]="menuVisible">
-        <!-- Kitchen specific items would go here -->
-      </nav>
-    }
   }
 
+  <!-- Acciones rápidas para admin -->
   @if (isAdmin) {
     <div class="quick-actions">
       <button mat-icon-button [matMenuTriggerFor]="quickActionsMenu">
@@ -54,7 +55,8 @@
     </div>
   }
 
-  <div class="profile-menu" [class.admin-menu]="isAdmin">
+  <!-- Menú de usuario -->
+  <div class="profile-menu">
     <button mat-icon-button [matMenuTriggerFor]="userMenu">
       <mat-icon>account_circle</mat-icon>
       @if (isAdmin) {
@@ -64,12 +66,13 @@
   </div>
 </mat-toolbar>
 
+<!-- Menú desplegable de usuario -->
 <mat-menu #userMenu="matMenu" class="profile-dropdown">
-  <button mat-menu-item routerLink="/profile">
+  <button mat-menu-item routerLink="/profile" routerLinkActive="active-link">
     <mat-icon>person</mat-icon>
     <span>Mi Perfil</span>
   </button>
-  <button mat-menu-item routerLink="/settings">
+  <button mat-menu-item routerLink="/settings" routerLinkActive="active-link">
     <mat-icon>settings</mat-icon>
     <span>Configuración</span>
   </button>

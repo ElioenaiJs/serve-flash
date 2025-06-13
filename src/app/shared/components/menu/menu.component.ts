@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatDividerModule } from '@angular/material/divider';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -18,7 +18,8 @@ import { AuthService } from '../../../core/services/auth.service';
     MatMenuModule,
     MatBadgeModule,
     MatDividerModule,
-    RouterLink
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
@@ -28,12 +29,11 @@ export class MenuComponent {
   private authService = inject(AuthService);
   
   notificationsCount = 5;
-  profileMenuOpen = false;
-  userRole: string = '';
-  isAdmin: boolean = false;
   menuVisible = false;
+  userRole: string = 'admin'; // Cambiar por lógica real de obtención de rol
+  isAdmin = this.userRole === 'admin';
 
-  // Menu items by role
+  // Items del menú organizados por rol
   menuItems = {
     admin: [
       { name: 'Dashboard', icon: 'dashboard', route: '/admin/dashboard' },
@@ -41,9 +41,9 @@ export class MenuComponent {
       { name: 'Usuarios', icon: 'manage_accounts', route: '/admin/users' }
     ],
     customer: [
-     { name: 'Inicio', icon: 'home', route: '/customer/home' },
-    { name: 'Productos', icon: 'shopping_bag', route: '/customer/products' },
-    { name: 'Carrito', icon: 'shopping_cart', route: '/customer/cart' }
+      { name: 'Inicio', icon: 'home', route: '/admin/dashboard' },
+      { name: 'Productos', icon: 'inventory', route: '/admin/products' },
+      { name: 'Carrito', icon: 'shopping_cart', route: '/admin/cart' }
     ],
     kitchen: []
   };
@@ -53,24 +53,14 @@ export class MenuComponent {
     { name: 'Agregar Usuario', icon: 'person_add', action: 'addUser' }
   ];
 
-  constructor() {
-    this.loadUserRole();
-  }
-
-  private loadUserRole() {
-    const currentUser = this.authService['auth'].currentUser;
-    if (currentUser) {
-      this.authService.getUserRole(currentUser.uid).subscribe({
-        next: (role) => {
-          this.userRole = role;
-          this.isAdmin = this.userRole === 'admin';
-        },
-        error: () => {
-          this.userRole = 'customer';
-          this.isAdmin = false;
-        }
-      });
-    }
+  // Verifica si la ruta está activa
+  isActive(route: string): boolean {
+    return this.router.isActive(route, {
+      paths: 'exact',
+      queryParams: 'ignored',
+      fragment: 'ignored',
+      matrixParams: 'ignored'
+    });
   }
 
   onQuickAction(action: string) {
