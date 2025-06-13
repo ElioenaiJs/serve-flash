@@ -1,3 +1,6 @@
+.mobile-menu-button{
+  display: none;
+}
 .admin-toolbar {
   position: sticky;
   background-color: #00704A;
@@ -63,15 +66,20 @@
 
   @media (max-width: 768px) {
     padding: 0 12px;
-    
+    .mobile-menu-button {
+      display: block;
+      font-size: 24px;
+      color: white;
+    }
     .nav-menu {
       display: none;
       position: absolute;
       top: 64px;
       left: 0;
       width: 100%;
+      text-align: center;
       background-color: #00704A;
-      flex-direction: column;
+      flex-direction: row;
       padding: 8px 0;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
