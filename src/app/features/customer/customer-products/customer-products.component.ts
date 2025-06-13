@@ -26,8 +26,6 @@ import { MatDialog } from '@angular/material/dialog';
     MatTooltipModule,
     MatIconModule,
     MatDividerModule,
-    MatFormField,
-    MatLabel,
     FormsModule
   ],
   templateUrl: './customer-products.component.html',
