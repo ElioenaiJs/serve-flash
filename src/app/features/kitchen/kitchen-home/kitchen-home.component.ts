@@ -51,49 +51,58 @@ export class KitchenHomeComponent {
   completedOrdersColumns = ['orderId', 'time', 'items'];
 
   ngOnInit() {
-  this.orderService.getOrdersLive().subscribe({
-    next: (orders) => {
-      this.orders = orders;
-      this.loading = false;
-      this.initializeOrderSignals(orders);
-    },
-    error: (err) => {
-      this.error = 'Error al cargar órdenes en tiempo real';
-      this.loading = false;
-      console.error(err);
-    }
-  });
-}
+    this.orderService.getOrdersLive().subscribe({
+      next: (orders) => {
+        this.orders = orders;
+        console.log('Órdenes en tiempo real:', orders);
+        this.loading = false;
+        this.initializeOrderSignals(orders);
+      },
+      error: (err) => {
+        this.error = 'Error al cargar órdenes en tiempo real';
+        this.loading = false;
+        console.error(err);
+      }
+    });
+  }
 
 
   private initializeOrderSignals(orders: Order[]) {
-    // Filtra las órdenes según su estado
     this.receivedOrders.set(orders.filter(order => order.status === 'pending'));
     this.preparingOrders.set(orders.filter(order => order.status === 'preparing'));
     this.completedOrders.set(orders.filter(order => order.status === 'completed'));
   }
 
   startPreparation(order: Order) {
-    this.receivedOrders.update(orders => orders.filter(o => o.id !== order.id));
-    this.preparingOrders.update(orders => [...orders, { ...order, status: 'preparing' }]);
-    // Aquí deberías también actualizar la orden en el backend
+    if (order.id) {
+      this.orderService.updateOrderStatus(order.id, 'preparing')
+        .then(() => {
+          console.log(`Orden ${order.id} puesta en preparación`);
+        })
+        .catch(err => console.error(err));
+    } else {
+      // console.error('La orden no tiene un ID válido (startPreparation)');
+    }
   }
 
   markAsReady(order: Order) {
-    this.preparingOrders.update(orders => orders.filter(o => o.id !== order.id));
-    this.completedOrders.update(orders => [...orders, {
-      ...order,
-      status: 'completed',
-      completedAt: new Date()
-    }]);
-    // Aquí deberías también actualizar la orden en el backend
+    if (order.id) {
+      const completedAt = new Date();
+      this.orderService.updateOrderStatus(order.id, 'completed', completedAt)
+        .then(() => {
+          // console.log(`Orden ${order.id} marcada como completada`);
+        })
+        .catch(err => console.error(err));
+    } else {
+    }
   }
 
+
   getOrderItems(order: Order): any[] {
-  // Si items es un array, lo devuelve directamente
-  if (Array.isArray(order.items)) return order.items;
-  
-  // Si items es un objeto, lo convierte a array
-  return Object.values(order.items || {});
-}
+    // Si items es un array, lo devuelve directamente
+    if (Array.isArray(order.items)) return order.items;
+
+    // Si items es un objeto, lo convierte a array
+    return Object.values(order.items || {});
+  }
 }

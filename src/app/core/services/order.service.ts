@@ -71,7 +71,7 @@ export class OrderService {
       const ordersRef = ref(this.db, 'orders');
       const newOrderRef = push(ordersRef);
       await set(newOrderRef, newOrder);
-      
+
       return {
         id: newOrderRef.key as string,
         ...newOrder
@@ -83,31 +83,58 @@ export class OrderService {
   }
 
   getOrdersLive(): Observable<Order[]> {
-  const ordersRef = ref(this.db, 'orders');
+    const ordersRef = ref(this.db, 'orders');
 
-  return new Observable<Order[]>(subscriber => {
-    const unsubscribe = onValue(ordersRef, (snapshot) => {
-      const orders: Order[] = [];
+    return new Observable<Order[]>(subscriber => {
+      const unsubscribe = onValue(ordersRef, (snapshot) => {
+        const orders: Order[] = [];
 
-      snapshot.forEach(childSnapshot => {
-        const orderData = childSnapshot.val();
-        orders.push({
-          id: childSnapshot.key as string,
-          ...orderData,
-          tableNumber: orderData.tablNumber || orderData.tableNumber,
-          preparationTime: orderData.preparationTime || 0
+        snapshot.forEach(childSnapshot => {
+          const orderData = childSnapshot.val();
+          orders.push({
+            id: childSnapshot.key as string,
+            ...orderData,
+            tableNumber: orderData.tablNumber || orderData.tableNumber,
+            preparationTime: orderData.preparationTime || 0
+          });
         });
+
+        subscriber.next(orders);
+      }, (error) => {
+        console.error('Error al escuchar pedidos:', error);
+        subscriber.error(error);
       });
 
-      subscriber.next(orders);
-    }, (error) => {
-      console.error('Error al escuchar pedidos:', error);
-      subscriber.error(error);
+      // cleanup
+      return () => unsubscribe();
     });
+  }
 
-    // cleanup
-    return () => unsubscribe();
-  });
-}
+  updateOrderStatus(orderId: string, status: string, completedAt?: Date): Promise<void> {
+    const orderRef = ref(this.db, `orders/${orderId}`);
+
+    // Primero obtenemos la orden actual
+    return get(orderRef).then(snapshot => {
+      if (!snapshot.exists()) {
+        throw new Error('Orden no encontrada');
+      }
+
+      const currentOrder = snapshot.val();
+
+      // Actualizamos los datos necesarios
+      const updatedOrder = {
+        ...currentOrder,
+        status,
+        updatedAt: Date.now(),
+        completedAt: completedAt ? completedAt.getTime() : currentOrder.completedAt || null
+      };
+
+      return set(orderRef, updatedOrder);
+    }).catch(error => {
+      console.error('Error al actualizar estado de la orden:', error);
+      throw error;
+    });
+  }
+
 
 }

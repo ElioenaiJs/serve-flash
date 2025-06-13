@@ -6,7 +6,7 @@ export interface OrderItem {
 }
 
 export interface Order {
-  id?: string;
+  id?: string | null;
   createdAt: number;
   customerId: string;
   items: { [key: string]: OrderItem } | OrderItem[];
