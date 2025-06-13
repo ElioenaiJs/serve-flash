@@ -1,19 +1,14 @@
 <div class="profile-container">
-
   <mat-card class="profile-card" *ngIf="user">
-
     <div class="profile-header">
       <div class="profile-avatar">
         <img [src]="user.photoURL || 'assets/images/default-avatar.png'" alt="Foto de perfil">
       </div>
-
-
       <h2>{{ user.displayName || 'Usuario de Firebase' }}</h2>
      
         <mat-chip color="primary" selected>
           {{ user.providerId === 'password' ? 'Email/Password' : user.providerId }}
         </mat-chip>
-
 
     </div>
 
@@ -21,7 +16,6 @@
 
     <div class="profile-info">
       <div class="info-section">
-
         <h3>Información de Firebase Auth</h3>
         
         <div class="info-row">
@@ -42,47 +36,10 @@
         <div class="info-row">
           <div class="info-label">Proveedor:</div>
           <div class="info-value">{{ user.providerId || 'No especificado' }}</div>
-
-        <h3>Información Personal</h3>
-
-        <h3>Información de Firebase Auth</h3>
-        
-
-        <div class="info-row">
-          <div class="info-label">UID:</div>
-          <div class="info-value">{{ user.uid }}</div>
-        </div>
-
-        <div class="info-row">
-          <div class="info-label">Email:</div>
-          <div class="info-value">{{ user.email || 'No especificado' }}</div>
-        </div>
-
-        <div class="info-row">
-          <div class="info-label">Nombre:</div>
-          <div class="info-value">{{ user.displayName || 'No especificado' }}</div>
-        </div>
-
-        <div class="info-row">
-
-          <div class="info-label">Estado:</div>
-          <div class="info-value">
-    
-          </div>
-        </div>
-        <div class="info-row">
-          <div class="info-label">Miembro desde:</div>
-          <div class="info-value">{{user?.createdAt | date:'longDate':'':'es'}}</div>
-
-
-          <div class="info-label">Proveedor:</div>
-          <div class="info-value">{{ user.providerId || 'No especificado' }}</div>
-
         </div>
       </div>
     </div>
   </mat-card>
-
 
   <mat-card class="profile-card" *ngIf="!user">
     <mat-card-content>
@@ -91,5 +48,4 @@
       </div>
     </mat-card-content>
   </mat-card>
-
 </div>

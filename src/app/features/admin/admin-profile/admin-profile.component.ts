@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
-
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import firebase from 'firebase/compat/app';
 
@@ -28,7 +27,6 @@ interface UserProfile {
   styleUrls: ['./admin-profile.component.scss']
 })
 export class AdminProfileComponent implements OnInit {
-
   user: UserProfile | null = null;
 
   constructor(private afAuth: AngularFireAuth) {}
@@ -49,5 +47,5 @@ export class AdminProfileComponent implements OnInit {
         this.user = null;
       }
     });
-
   }
+}
