@@ -1,9 +1,9 @@
-import { inject, Injectable } from '@angular/core';
-import { Database, get, onValue, query, ref } from '@angular/fire/database';
-import { push, set } from 'firebase/database';
-import { BehaviorSubject, from, Observable } from 'rxjs';
-import { filter, map, switchMap, take } from 'rxjs/operators';
-import { CreateOrderRequest, Order, OrderItem } from '../models/order.model';
+import {inject, Injectable} from '@angular/core';
+import {Database, get, onValue, query, ref} from '@angular/fire/database';
+import {push, set} from 'firebase/database';
+import {BehaviorSubject, from, Observable} from 'rxjs';
+import {filter, map, switchMap, take} from 'rxjs/operators';
+import {CreateOrderRequest, Order, OrderItem} from '../models/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,6 @@ export class OrderService {
       this.connected.next(snapshot.val() === true);
     });
   }
-
 
   getOrders(): Observable<Order[]> {
     return this.connected.pipe(
@@ -36,8 +35,8 @@ export class OrderService {
               orders.push({
                 id: childSnapshot.key as string, // Mapeamos la key de Firebase a id
                 ...orderData,
-                tableNumber: orderData.tablNumber || orderData.tableNumber, // Maneja ambos casos
-                preparationTime: orderData.preparationTime || 0 // Valor por defecto
+                tableNumber: orderData.tablNumber || orderData.tableNumber,
+                preparationTime: orderData.preparationTime || 0   
               });
             });
             return orders;

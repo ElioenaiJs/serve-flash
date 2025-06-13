@@ -17,7 +17,6 @@ export interface Order {
   updatedAt: number;
 }
 
-// Modelo para crear nuevas órdenes
 export interface CreateOrderRequest {
   customerId: string;
   items: Array<{

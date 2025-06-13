@@ -1,17 +1,17 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatTableModule } from '@angular/material/table';
-import { Order } from '../../../core';
-import { OrderService } from '../../../core/services/order.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { CustomSnackBarComponent } from '../../../shared';
+import {CommonModule} from '@angular/common';
+import {Component, inject, signal} from '@angular/core';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatChipsModule} from '@angular/material/chips';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatIconModule} from '@angular/material/icon';
+import {MatListModule} from '@angular/material/list';
+import {MatTableModule} from '@angular/material/table';
+import {Order} from '../../../core';
+import {OrderService} from '../../../core/services/order.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {CustomSnackBarComponent} from '../../../shared';
 
 @Component({
   selector: 'app-kitchen-home',
@@ -34,25 +34,23 @@ import { CustomSnackBarComponent } from '../../../shared';
 export class KitchenHomeComponent {
   private orderService = inject(OrderService);
   private snackBar = inject(MatSnackBar);
-  orders: Order[] = [];
-  loading = true;
-  error: string | null = null;
+  public orders: Order[] = [];
+  public loading = true;
+  public error: string | null = null;
 
-  receivedOrders = signal<Order[]>([]);
-  preparingOrders = signal<Order[]>([]);
-  completedOrders = signal<Order[]>([]);
-  completedOrdersColumns = ['orderId', 'time', 'items'];
+  public receivedOrders = signal<Order[]>([]);
+  public preparingOrders = signal<Order[]>([]);
+  public completedOrders = signal<Order[]>([]);
+  public completedOrdersColumns = ['orderId', 'time', 'items'];
 
   ngOnInit() {
     this.orderService.getOrdersLive().subscribe({
       next: (orders) => {
         this.orders = orders;
-        console.log('Órdenes en tiempo real:', orders);
         this.loading = false;
         this.initializeOrderSignals(orders);
       },
       error: (err) => {
-        this.error = 'Error al cargar órdenes en tiempo real';
         this.loading = false;
         console.error(err);
       }
@@ -66,7 +64,7 @@ export class KitchenHomeComponent {
     this.completedOrders.set(orders.filter(order => order.status === 'completed'));
   }
 
-  startPreparation(order: Order) {
+  public startPreparation(order: Order) {
     if (order.id) {
       this.orderService.updateOrderStatus(order.id, 'preparing')
         .then(() => {
@@ -81,7 +79,7 @@ export class KitchenHomeComponent {
     }
   }
 
-  markAsReady(order: Order) {
+  public markAsReady(order: Order) {
     if (order.id) {
       const completedAt = new Date();
       this.orderService.updateOrderStatus(order.id, 'completed', completedAt)
@@ -97,9 +95,7 @@ export class KitchenHomeComponent {
     }
   }
 
-
-
-  getOrderItems(order: Order): any[] {
+  public getOrderItems(order: Order): any[] {
     // Si items es un array, lo devuelve directamente
     if (Array.isArray(order.items)) return order.items;
 
@@ -107,12 +103,12 @@ export class KitchenHomeComponent {
     return Object.values(order.items || {});
   }
 
-  showCustomSnackBar(message: string) {
-  this.snackBar.openFromComponent(CustomSnackBarComponent, {
-    data: { message },
-    duration: 4000,
-    horizontalPosition: 'end',
-    verticalPosition: 'top',
-  });
-}
+  public showCustomSnackBar(message: string) {
+    this.snackBar.openFromComponent(CustomSnackBarComponent, {
+      data: {message},
+      duration: 4000,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+    });
+  }
 }
