@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,16 +24,16 @@ import { AuthService } from '../../../core/services/auth.service';
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
-export class MenuComponent {
+export class MenuComponent implements OnInit {
   private router = inject(Router);
   private authService = inject(AuthService);
   
   notificationsCount = 5;
   menuVisible = false;
-  userRole: string = 'admin'; // Cambiar por lógica real de obtención de rol
-  isAdmin = this.userRole === 'admin';
+  userRole: string = '';
+  isAdmin = false;
 
-  // Items del menú organizados por rol
+  // Items del menú por rol
   menuItems = {
     admin: [
       { name: 'Dashboard', icon: 'dashboard', route: '/admin/dashboard' },
@@ -41,9 +41,9 @@ export class MenuComponent {
       { name: 'Usuarios', icon: 'manage_accounts', route: '/admin/users' }
     ],
     customer: [
-     { name: 'Inicio', icon: 'home', route: '/customer/home' },
-    { name: 'Productos', icon: 'shopping_bag', route: '/customer/products' },
-    { name: 'Carrito', icon: 'shopping_cart', route: '/customer/cart' }
+      { name: 'Inicio', icon: 'home', route: '/customer/dashboard' },
+      { name: 'Productos', icon: 'inventory', route: '/customer/products' },
+      { name: 'Carrito', icon: 'shopping_cart', route: '/customer/cart' }
     ],
     kitchen: []
   };
@@ -52,6 +52,27 @@ export class MenuComponent {
     { name: 'Nuevo Producto', icon: 'add_circle', action: 'addProduct' },
     { name: 'Agregar Usuario', icon: 'person_add', action: 'addUser' }
   ];
+
+  ngOnInit() {
+    this.loadUserRole();
+  }
+
+  private loadUserRole() {
+    // Implementación real para obtener el rol del usuario
+    const currentUser = this.authService['auth'].currentUser;
+    if (currentUser) {
+      this.authService.getUserRole(currentUser.uid).subscribe({
+        next: (role) => {
+          this.userRole = role;
+          this.isAdmin = this.userRole === 'admin';
+        },
+        error: () => {
+          this.userRole = 'customer';
+          this.isAdmin = false;
+        }
+      });
+    }
+  }
 
   // Verifica si la ruta está activa
   isActive(route: string): boolean {
