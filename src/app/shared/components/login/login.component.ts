@@ -54,7 +54,7 @@ export class LoginComponent {
             } else if (role === 'customer') {
               this.router.navigate(['/customer/products']);
             } else {
-              this.router.navigate(['/kitchen']);
+              this.router.navigate(['/kitchen/home']);
             }
           },
           error: (err) => {
