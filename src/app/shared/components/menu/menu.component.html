@@ -1,5 +1,4 @@
 <mat-toolbar color="primary" class="admin-toolbar">
-
   <button mat-icon-button class="mobile-menu-button" (click)="toggleMenu()">
     <mat-icon>menu</mat-icon>
   </button>
@@ -10,39 +9,37 @@
   </div>
 
   <span class="spacer"></span>
-
-
-
-
-
+  
+  <!-- Menú principal dinámico según rol -->
   <nav class="nav-menu" [class.mobile-visible]="menuVisible">
-    <a mat-button *ngFor="let item of menuItemsClient" [routerLink]="item.route">
-
+    <a mat-button *ngFor="let item of getMenuItems()" [routerLink]="item.route" routerLinkActive="active-link">
       <mat-icon>{{item.icon}}</mat-icon>
-      {{item.name}}
-      
+      <span>{{item.name}}</span>
     </a>
-    <a mat-button routerLink="/admin/products" routerLinkActive="active-link">
-      <mat-icon>inventory</mat-icon>
-      <span>Productos</span>
-    </a>
-    <a mat-button routerLink="/admin/users" routerLinkActive="active-link">
-      <mat-icon>people</mat-icon>
-      <span>Usuarios</span>
-    </a>
-
   </nav>
 
-  <div class="profile-menu" [class.admin-menu]="isAdmin">
-    <button mat-icon-button [matMenuTriggerFor]="userMenu" class="admin-only">
-      <mat-icon>account_circle</mat-icon>
+  <!-- Acciones rápidas para admin -->
+  <div class="quick-actions" *ngIf="showQuickActions()">
+    <button mat-icon-button [matMenuTriggerFor]="quickActionsMenu">
+      <mat-icon>bolt</mat-icon>
     </button>
-    <button mat-icon-button (click)="logout()" class="user-only">
-      <mat-icon>exit_to_app</mat-icon>
+    <mat-menu #quickActionsMenu="matMenu">
+      <button mat-menu-item *ngFor="let action of quickActions" (click)="onQuickAction(action.action)">
+        <mat-icon>{{action.icon}}</mat-icon>
+        <span>{{action.name}}</span>
+      </button>
+    </mat-menu>
+  </div>
+
+  <!-- Menú de perfil -->
+  <div class="profile-menu" [class.admin-menu]="isAdmin">
+    <button mat-icon-button [matMenuTriggerFor]="userMenu">
+      <mat-icon>account_circle</mat-icon>
     </button>
   </div>
 </mat-toolbar>
 
+<!-- Menú desplegable de usuario -->
 <mat-menu #userMenu="matMenu" class="profile-dropdown">
   <button mat-menu-item routerLink="/profile">
     <mat-icon>person</mat-icon>
