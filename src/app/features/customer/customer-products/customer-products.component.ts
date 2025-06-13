@@ -7,7 +7,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
-import { menuCategories, Product, products } from './customer-products';
+import { menuCategories, Product } from './customer-products';
 import { CartService, ProductService } from '../../../core';
 
 @Component({
@@ -60,7 +60,9 @@ export class CustomerProductsComponent implements OnInit {
     if (this.selectedCategory === 'Todos los productos') {
       return this.products;
     }
-    return this.products.filter(product => product.category === this.selectedCategory);
+    return this.products.filter(product =>
+      product.categories?.includes(this.selectedCategory.toLowerCase())
+    );
   }
 
   handleAddToCart(product: Product): void {
