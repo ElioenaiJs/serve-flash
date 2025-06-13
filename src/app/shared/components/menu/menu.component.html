@@ -10,73 +10,60 @@
 
   <span class="spacer"></span>
   
-  <!-- Menú principal usando ngSwitch -->
-  <nav class="nav-menu" [class.mobile-visible]="menuVisible" [ngSwitch]="userRole">
-    <!-- Menú para admin -->
-    <ng-container *ngSwitchCase="'admin'">
-      <a mat-button routerLink="/admin/dashboard" routerLinkActive="active-link">
-        <mat-icon>dashboard</mat-icon>
-        <span>Dashboard</span>
-      </a>
-      <a mat-button routerLink="/admin/products" routerLinkActive="active-link">
-        <mat-icon>inventory_2</mat-icon>
-        <span>Productos</span>
-      </a>
-      <a mat-button routerLink="/admin/users" routerLinkActive="active-link">
-        <mat-icon>manage_accounts</mat-icon>
-        <span>Usuarios</span>
-      </a>
-    </ng-container>
+  @switch (userRole) {
+    @case ('admin') {
+      <nav class="nav-menu" [class.mobile-visible]="menuVisible">
+        @for (item of menuItems.admin; track item.name) {
+          <a mat-button [routerLink]="item.route" routerLinkActive="active-link">
+            <mat-icon>{{item.icon}}</mat-icon>
+            <span>{{item.name}}</span>
+          </a>
+        }
+      </nav>
+    }
+    @case ('customer') {
+      <nav class="nav-menu" [class.mobile-visible]="menuVisible">
+        @for (item of menuItems.customer; track item.name) {
+          <a mat-button [routerLink]="item.route" routerLinkActive="active-link">
+            <mat-icon>{{item.icon}}</mat-icon>
+            <span>{{item.name}}</span>
+          </a>
+        }
+      </nav>
+    }
+    @case ('kitchen') {
+      <nav class="nav-menu" [class.mobile-visible]="menuVisible">
+        <!-- Kitchen specific items would go here -->
+      </nav>
+    }
+  }
 
-    <!-- Menú para customer -->
-    <ng-container *ngSwitchCase="'customer'">
-      <a mat-button routerLink="/admin/dashboard" routerLinkActive="active-link">
-        <mat-icon>home</mat-icon>
-        <span>Inicio</span>
-      </a>
-      <a mat-button routerLink="/admin/products" routerLinkActive="active-link">
-        <mat-icon>inventory</mat-icon>
-        <span>Productos</span>
-      </a>
-      <a mat-button routerLink="/admin/cart" routerLinkActive="active-link">
-        <mat-icon>shopping_cart</mat-icon>
-        <span>Carrito</span>
-      </a>
-    </ng-container>
-
-    <!-- Menú para kitchen (si es necesario) -->
-    <ng-container *ngSwitchCase="'kitchen'">
-      <!-- Items específicos para kitchen -->
-    </ng-container>
-  </nav>
-
-  <!-- Acciones rápidas (solo para admin) -->
-  <div class="quick-actions" *ngIf="isAdmin">
-    <button mat-icon-button [matMenuTriggerFor]="quickActionsMenu">
-      <mat-icon>bolt</mat-icon>
-    </button>
-    <mat-menu #quickActionsMenu="matMenu">
-      <button mat-menu-item (click)="onQuickAction('addProduct')">
-        <mat-icon>add_circle</mat-icon>
-        <span>Nuevo Producto</span>
+  @if (isAdmin) {
+    <div class="quick-actions">
+      <button mat-icon-button [matMenuTriggerFor]="quickActionsMenu">
+        <mat-icon>bolt</mat-icon>
       </button>
-      <button mat-menu-item (click)="onQuickAction('addUser')">
-        <mat-icon>person_add</mat-icon>
-        <span>Agregar Usuario</span>
-      </button>
-    </mat-menu>
-  </div>
+      <mat-menu #quickActionsMenu="matMenu">
+        @for (action of quickActions; track action.name) {
+          <button mat-menu-item (click)="onQuickAction(action.action)">
+            <mat-icon>{{action.icon}}</mat-icon>
+            <span>{{action.name}}</span>
+          </button>
+        }
+      </mat-menu>
+    </div>
+  }
 
-  <!-- Menú de perfil -->
   <div class="profile-menu" [class.admin-menu]="isAdmin">
     <button mat-icon-button [matMenuTriggerFor]="userMenu">
       <mat-icon>account_circle</mat-icon>
-      
+      @if (isAdmin) {
+        <mat-icon class="admin-badge">verified_user</mat-icon>
+      }
     </button>
   </div>
 </mat-toolbar>
 
-<!-- Menú desplegable de usuario -->
 <mat-menu #userMenu="matMenu" class="profile-dropdown">
   <button mat-menu-item routerLink="/profile">
     <mat-icon>person</mat-icon>
