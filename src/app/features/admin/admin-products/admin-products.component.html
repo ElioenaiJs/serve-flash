@@ -20,7 +20,7 @@
         @for (product of products; track $index) {
         <div class="product-card">
           <mat-card class="example-card" appearance="outlined">
-            <img mat-card-image [src]="product.imageUrl" />
+          <img [src]="product.images[0]" alt="Producto" />
             <mat-card-content>
               <span><strong>{{ product.name }}</strong></span>
               <span><strong>{{ product.title }}</strong></span>

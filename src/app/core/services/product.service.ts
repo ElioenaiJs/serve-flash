@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Database, get, onValue, query, ref, push, set } from '@angular/fire/database';
 import { BehaviorSubject, filter, from, map, Observable, switchMap, take } from 'rxjs';
 import { Product } from '../models/product.model';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +10,22 @@ import { Product } from '../models/product.model';
 export class ProductService {
   private db = inject(Database);
   private connected = new BehaviorSubject<boolean>(false);
-
+  private http = inject(HttpClient);
   constructor() {
     const connectedRef = ref(this.db, '.info/connected');
     onValue(connectedRef, (snapshot) => {
       this.connected.next(snapshot.val() === true);
     });
   }
+
+
+  uploadImage(file: File): Observable<{ imageUrl: string }> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<{ imageUrl: string }>('http://localhost:3000/upload', formData);
+  }
+
 
   getProducts(): Observable<Product[]> {
     return this.connected.pipe(

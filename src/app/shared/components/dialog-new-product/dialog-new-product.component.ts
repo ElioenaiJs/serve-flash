@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ProductService } from '../../../core';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-dialog-new-product',
@@ -64,7 +65,12 @@ export class DialogNewProductComponent {
       try {
         const formValue = this.productForm.value;
 
-        const imageUrl = 'https://example.com/image.jpg';
+        const file = formValue.image as File;
+        if (!file || !(file instanceof File)) {
+          throw new Error('El archivo de imagen no es válido');
+        }
+
+        const { imageUrl } = await firstValueFrom(this.productService.uploadImage(file));
 
         await this.productService.createProduct({
           name: formValue.name!,
@@ -76,12 +82,12 @@ export class DialogNewProductComponent {
         this.dialogRef.close(true);
       } catch (error) {
         console.error('Error al crear el producto:', error);
-
       } finally {
         this.isSubmitting = false;
       }
     }
   }
+
 
   public onCancel(): void {
     this.dialogRef.close();
