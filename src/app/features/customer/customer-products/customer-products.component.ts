@@ -26,16 +26,15 @@ import { CartService, ProductService } from '../../../core';
   styleUrls: ['./customer-products.component.scss']
 })
 export class CustomerProductsComponent implements OnInit {
-  selectedCategory = 'Todos los productos';
   private readonly productService = inject(ProductService);
   private readonly cartService = inject(CartService);
   public products: any[] = [];
   public loading = true;
   public error: string | null = null;
-  addedItems: Record<string, boolean> = {};
-  menuCategories = menuCategories;
+  public addedItems: Record<string, boolean> = {};
+  public menuCategories = menuCategories;
 
-
+  public selectedCategory: string = menuCategories[0].title;
 
   ngOnInit() {
     this.fetchProducts();
@@ -73,7 +72,13 @@ export class CustomerProductsComponent implements OnInit {
     }, 2000);
   }
 
+
   selectCategory(category: string): void {
-    this.selectedCategory = category;
+    // Normaliza la comparación de categorías
+    this.selectedCategory = this.menuCategories.find(c =>
+      c.title.toLowerCase() === category.toLowerCase()
+    )?.title || this.menuCategories[0].title;
+
   }
+
 }

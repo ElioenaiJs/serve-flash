@@ -8,63 +8,60 @@
     </div>
 
     <div class="categories-container">
-      <div class="categories-scroll">
-        @for (category of menuCategories; track category.title) {
-          <button 
-            mat-raised-button
-            [color]="selectedCategory === category.title ? 'primary' : 'basic'"
-            (click)="selectCategory(category.title)"
-          >
-            <mat-icon>{{category.icon}}</mat-icon>
-            {{ category.title }}
-          </button>
-        }
-      </div>
-    </div>
-    <br>
+  <div class="categories-scroll">
+    @for (category of menuCategories; track category.title) {
+      <button 
+        mat-raised-button
+        [class.selected]="selectedCategory === category.title"
+        (click)="selectCategory(category.title)"
+        class="category-button"
+      >
+        <mat-icon>{{category.icon}}</mat-icon>
+        {{ category.title }}
+      </button>
+    }
+  </div>
+</div>
 
     <div class="products-container">
       @for (product of filteredProducts; track product.id) {
-        <div class="product-card">
-          <mat-card class="example-card">
-            <img 
-              mat-card-image 
-              [src]="product.imageUrl" 
-              [alt]="product.title"
+      <div class="product-card">
+        <mat-card class="example-card">
+          <img mat-card-image [src]="product.imageUrl" [alt]="product.title" />
+          <mat-chip-option class="category-chip" disabled>
+            {{ product.category }}
+          </mat-chip-option>
+          <mat-card-content>
+            <h3>{{ product.title }}</h3>
+            <p class="product-description">{{ product.description }}</p>
+          </mat-card-content>
+          <mat-card-actions class="custom-actions">
+            <span>${{ product.price.toFixed(2) }}</span>
+            <button
+              mat-button
+              [color]="addedItems[product.id] ? 'primary' : 'basic'"
+              (click)="handleAddToCart(product)"
+              [matTooltip]="
+                addedItems[product.id]
+                  ? '¡Agregado al carrito!'
+                  : 'Agregar al carrito'
+              "
             >
-            <mat-chip-option
-              class="category-chip"
-              disabled
-            >
-              {{ product.category }}
-            </mat-chip-option>
-            <mat-card-content>
-              <h3>{{ product.title }}</h3>
-              <p class="product-description">{{ product.description }}</p>
-            </mat-card-content>
-            <mat-card-actions class="custom-actions">
-              <span>${{ product.price.toFixed(2) }}</span>
-              <button
-                mat-button
-                [color]="addedItems[product.id] ? 'primary' : 'basic'"
-                (click)="handleAddToCart(product)"
-                [matTooltip]="addedItems[product.id] ? '¡Agregado al carrito!' : 'Agregar al carrito'"
-              >
-                @if (addedItems[product.id]) {
-                  <ng-container>
-                    <mat-icon>check</mat-icon>
-                    Agregado
-                  </ng-container>
-                } @else {
-                  <ng-container>
-                    <mat-icon>add</mat-icon>
-                    Agregar
-                  </ng-container>
-                }
-              </button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
+              @if (addedItems[product.id]) {
+              <ng-container>
+                <mat-icon>check</mat-icon>
+                Agregado
+              </ng-container>
+              } @else {
+              <ng-container>
+                <mat-icon>add</mat-icon>
+                Agregar
+              </ng-container>
+              }
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
       }
     </div>
   </div>
