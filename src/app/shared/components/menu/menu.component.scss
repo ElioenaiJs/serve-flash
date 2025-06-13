@@ -1,11 +1,15 @@
+.mobile-menu-button{
+  display: none;
+}
 .admin-toolbar {
-  display: flex;
-  align-items: center;
   position: sticky;
-  top: 0;
-  z-index: 1000;
   background-color: #00704A;
-  padding: 0 1rem;
+  color: white;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 24px;
   height: 64px;
 
   .branding {
@@ -13,15 +17,14 @@
     align-items: center;
     gap: 8px;
     cursor: pointer;
-
+    
     .logo-icon {
-      font-size: 24px;
+      font-size: 28px;
     }
     
     .app-name {
       font-size: 18px;
       font-weight: 500;
-      color: white; 
     }
   }
 
@@ -29,46 +32,54 @@
     flex: 1;
   }
 
-  .mobile-menu-button {
-    display: none;
-    @media (max-width: 768px) {
-      display: inline-flex;
-      color: white;
-      margin-right: 8px;
-    }
-  }
-
   .nav-menu {
     display: flex;
-    align-items: center;
-    gap: 16px;
+    gap: 4px;
 
     a {
       display: flex;
       align-items: center;
       gap: 8px;
-      height: 64px;
-      padding: 0 16px;
-      color: white;
+      font-size: 14px;
+      font-weight: 500;
       text-decoration: none;
-      &:hover,
-      &.active-link {
+      transition: background-color 0.3s;
+      color: white;
+      padding: 0 12px;
+      
+      &:hover {
         background-color: rgba(255, 255, 255, 0.1);
       }
-      mat-icon {
-        font-size: 20px;
+
+      &.active-link {
+        background-color: rgba(255, 255, 255, 0.2);
       }
     }
+  }
 
-    @media (max-width: 768px) {
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 16px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 12px;
+    .mobile-menu-button {
+      display: block;
+      font-size: 24px;
+      color: white;
+    }
+    .nav-menu {
       display: none;
       position: absolute;
       top: 64px;
       left: 0;
       width: 100%;
+      text-align: center;
       background-color: #00704A;
-      flex-direction: row; 
-      justify-content: center;
+      flex-direction: row;
       padding: 8px 0;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
@@ -78,21 +89,12 @@
 
       a {
         height: 48px;
-        padding: 0 12px;
+        padding: 0 16px;
       }
     }
-  }
 
-  .profile-menu {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-
-    .admin-only {
-      display: block;
-    }
-    .user-only {
-      display: block;
+    .actions {
+      margin-left: 0;
     }
   }
 }
@@ -109,7 +111,7 @@
   }
 }
 
-.mat-icon{
+.mat-icon {
   color: white;
 }
 
