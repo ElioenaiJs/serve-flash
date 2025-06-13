@@ -46,7 +46,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 })
 export class AdminUsersComponent implements OnInit {
   users$!: Observable<User[]>;
-  newUser: Omit<User, 'id'> = { name: '', email: '', role: 'customer' };
+  newUser: Omit<User, 'id'> = { username: '', email: '', role: 'customer' };
   editingUserId: string | null = null;
   editUserData: Partial<User> = {};
   
