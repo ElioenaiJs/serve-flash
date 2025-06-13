@@ -41,7 +41,7 @@ export class MenuComponent implements OnInit {
       { name: 'Usuarios', icon: 'manage_accounts', route: '/admin/users' }
     ],
     customer: [
-      { name: 'Inicio', icon: 'home', route: '/customer/dashboard' },
+      { name: 'Inicio', icon: 'home', route: '/customer/home' },
       { name: 'Productos', icon: 'inventory', route: '/customer/products' },
       { name: 'Carrito', icon: 'shopping_cart', route: '/customer/cart' }
     ],
