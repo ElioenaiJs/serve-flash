@@ -1,8 +1,12 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 
-interface CartItem {
-  product: any;
+export interface CartItem {
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    images: string[];
+  };
   quantity: number;
 }
 
@@ -10,44 +14,37 @@ interface CartItem {
   providedIn: 'root'
 })
 export class CartService {
-  public cartItems = new BehaviorSubject<CartItem[]>([]);
-  cartItems$ = this.cartItems.asObservable();
+  cartItems = signal<CartItem[]>([]);
 
   addToCart(product: any) {
-    const currentItems = this.cartItems.value;
-    const existingItem = currentItems.find(item => item.product.id === product.id);
-
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      currentItems.push({ product, quantity: 1 });
-    }
-
-    this.cartItems.next([...currentItems]);
+    this.cartItems.update(items => {
+      const existingItem = items.find(item => item.product.id === product.id);
+      if (existingItem) {
+        return items.map(item => 
+          item.product.id === product.id 
+            ? { ...item, quantity: item.quantity + 1 } 
+            : item
+        );
+      }
+      return [...items, { product, quantity: 1 }];
+    });
   }
 
   removeFromCart(productId: string) {
-    const currentItems = this.cartItems.value.filter(item => item.product.id !== productId);
-    this.cartItems.next(currentItems);
+    this.cartItems.update(items => 
+      items.filter(item => item.product.id !== productId)
+    );
   }
 
   updateQuantity(productId: string, quantity: number) {
-    const currentItems = this.cartItems.value;
-    const item = currentItems.find(i => i.product.id === productId);
-
-    if (item) {
-      item.quantity = quantity;
-      this.cartItems.next([...currentItems]);
-    }
+    this.cartItems.update(items => 
+      items.map(item => 
+        item.product.id === productId ? { ...item, quantity } : item
+      )
+    );
   }
 
   clearCart() {
-    this.cartItems.next([]);
-  }
-
-  getTotal() {
-    return this.cartItems.value.reduce(
-      (total, item) => total + (item.product.price * item.quantity), 0
-    );
+    this.cartItems.set([]);
   }
 }

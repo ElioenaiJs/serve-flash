@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { Database, ref, query, get, onValue } from '@angular/fire/database';
-import { BehaviorSubject, Observable, from } from 'rxjs';
-import { map, filter, take, switchMap } from 'rxjs/operators';
-import { Order } from '../models/order.model';
+import { Database, get, onValue, query, ref } from '@angular/fire/database';
+import { push, set } from 'firebase/database';
+import { BehaviorSubject, from, Observable } from 'rxjs';
+import { filter, map, switchMap, take } from 'rxjs/operators';
+import { CreateOrderRequest, Order, OrderItem } from '../models/order.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +45,40 @@ export class OrderService {
         );
       })
     );
+  }
+
+  async createOrder(orderData: CreateOrderRequest): Promise<Order> {
+    const newOrder: Order = {
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      customerId: orderData.customerId,
+      items: orderData.items.reduce((acc, item) => {
+        acc[item.productId] = {
+          productId: item.productId,
+          name: item.name,
+          quantity: item.quantity,
+          unitPrice: item.unitPrice
+        };
+        return acc;
+      }, {} as { [key: string]: OrderItem }),
+      notes: orderData.notes,
+      status: 'pending',
+      tableNumber: orderData.tableNumber,
+      total: orderData.items.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0)
+    };
+
+    try {
+      const ordersRef = ref(this.db, 'orders');
+      const newOrderRef = push(ordersRef);
+      await set(newOrderRef, newOrder);
+      
+      return {
+        id: newOrderRef.key as string,
+        ...newOrder
+      };
+    } catch (error) {
+      console.error('Error creating order:', error);
+      throw error;
+    }
   }
 }

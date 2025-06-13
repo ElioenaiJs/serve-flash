@@ -1,16 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { CartService } from '../../../core';
-import { map } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCardModule } from '@angular/material/card';
-import { MatInputModule } from '@angular/material/input';
+import { Component, inject } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
+import { map } from 'rxjs';
+import { AuthService, CartItem, CartService, CreateOrderRequest, OrderService } from '../../../core';
 
 @Component({
-  selector: 'app-client-cart-component',
+  selector: 'app-customer-cart-component',
   imports: [
     CommonModule,
     MatButtonModule,
@@ -21,16 +22,57 @@ import { MatListModule } from '@angular/material/list';
     MatListModule,
   ],
   templateUrl: './customer-cart-component.component.html',
-  styleUrl: './customer-cart-component.component.scss'
+  styleUrls: ['./customer-cart-component.component.scss']
 })
+
 export class CustomerCartComponentComponent {
-  private readonly cartService = inject(CartService);
-  cartItems$ = this.cartService.cartItems$;
-  total$ = this.cartService.cartItems$.pipe(
-    map(items => items.reduce(
-      (total, item) => total + (item.product.price * item.quantity), 0
-    ))
+  private orderService = inject(OrderService);
+  private cartService = inject(CartService);
+  private authService = inject(AuthService);
+
+  cartItems = this.cartService.cartItems;
+
+  total$ = toObservable(this.cartService.cartItems).pipe(
+    map((items: CartItem[]) =>
+      items.reduce((total, item) => total + item.product.price * item.quantity, 0)
+    )
   );
+
+  public async checkout() {
+    const items = this.cartService.cartItems();
+
+    if (items.length === 0) {
+      console.log('El carrito está vacío');
+      return;
+    }
+
+    const user = this.authService['auth'].currentUser;
+
+    if (!user) {
+      console.error('No hay usuario autenticado');
+      return;
+    }
+
+    const orderData: CreateOrderRequest = {
+      customerId: user.uid,
+      items: items.map((item: CartItem) => ({
+        productId: item.product.id,
+        name: item.product.name,
+        quantity: item.quantity,
+        unitPrice: item.product.price
+      })),
+      tableNumber: 1,
+      notes: ''
+    };
+
+    try {
+      console.log('Creando orden con los siguientes datos:', orderData);
+      const order = await this.orderService.createOrder(orderData);
+      this.cartService.clearCart();
+    } catch (error) {
+      console.error('Error al crear la orden:', error);
+    }
+  }
 
   public removeItem(productId: string) {
     this.cartService.removeFromCart(productId);
@@ -45,9 +87,5 @@ export class CustomerCartComponentComponent {
 
   public clearCart() {
     this.cartService.clearCart();
-  }
-
-  public checkout() {
-    console.log('Procesando compra...', this.cartService.cartItems.value);
   }
 }
