@@ -9,6 +9,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { menuCategories, Product } from './customer-products';
 import { CartService, ProductService } from '../../../core';
+import { GeminiService } from '../../../core/services/gemini.service';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { DialogGeminiComponent } from '../../../shared/components/dialog-gemini/dialog-gemini.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-client-products',
@@ -20,7 +25,10 @@ import { CartService, ProductService } from '../../../core';
     MatChipsModule,
     MatTooltipModule,
     MatIconModule,
-    MatDividerModule
+    MatDividerModule,
+    MatFormField,
+    MatLabel,
+    FormsModule
   ],
   templateUrl: './customer-products.component.html',
   styleUrls: ['./customer-products.component.scss']
@@ -28,6 +36,7 @@ import { CartService, ProductService } from '../../../core';
 export class CustomerProductsComponent implements OnInit {
   private readonly productService = inject(ProductService);
   private readonly cartService = inject(CartService);
+  private dialog = inject(MatDialog);
   public products: any[] = [];
   public loading = true;
   public error: string | null = null;
@@ -80,5 +89,15 @@ export class CustomerProductsComponent implements OnInit {
     )?.title || this.menuCategories[0].title;
 
   }
+  openGeminiDialog(product: any) {
+  const dialogRef = this.dialog.open(DialogGeminiComponent, {
+    width: '400px',
+    data: { product }
+  });
+
+  dialogRef.afterClosed().subscribe(() => {
+    // Opcional: acciones después de cerrar el diálogo
+  });
+}
 
 }

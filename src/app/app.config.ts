@@ -10,6 +10,7 @@ import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { environment } from '../environments/environment';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+const firebaseApp = initializeApp(environment.firebase);
 
 export const appConfig: ApplicationConfig = {
   providers:

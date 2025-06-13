@@ -8,20 +8,20 @@
     </div>
 
     <div class="categories-container">
-  <div class="categories-scroll">
-    @for (category of menuCategories; track category.title) {
-      <button 
-        mat-raised-button
-        [class.selected]="selectedCategory === category.title"
-        (click)="selectCategory(category.title)"
-        class="category-button"
-      >
-        <mat-icon>{{category.icon}}</mat-icon>
-        {{ category.title }}
-      </button>
-    }
-  </div>
-</div>
+      <div class="categories-scroll">
+        @for (category of menuCategories; track category.title) {
+        <button
+          mat-raised-button
+          [class.selected]="selectedCategory === category.title"
+          (click)="selectCategory(category.title)"
+          class="category-button"
+        >
+          <mat-icon>{{ category.icon }}</mat-icon>
+          {{ category.title }}
+        </button>
+        }
+      </div>
+    </div>
 
     <div class="products-container">
       @for (product of filteredProducts; track product.id) {
@@ -36,6 +36,10 @@
             <p class="product-description">{{ product.description }}</p>
           </mat-card-content>
           <mat-card-actions class="custom-actions">
+            <button mat-icon-button color="accent" (click)="openGeminiDialog(product)" matTooltip="Consulta con Gemini IA">
+              <mat-icon>smart_toy</mat-icon>
+            </button>
+
             <span>${{ product.price.toFixed(2) }}</span>
             <button
               mat-button

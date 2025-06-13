@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Consulta sobre {{ data.product.title }}</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Pregunta</mat-label>
+    <input matInput [formControl]="questionControl" />
+    @if (questionControl.hasError('required')) {
+      <mat-error>La pregunta es obligatoria</mat-error>
+    }
+  </mat-form-field>
+
+  @if (loading) {
+    <div style="text-align:center; margin: 1rem;">
+      <mat-progress-spinner mode="indeterminate" diameter="30"></mat-progress-spinner>
+    </div>
+  }
+
+  @if (answer) {
+    <div class="answer-box">
+      <h3>Respuesta:</h3>
+      <p>{{ answer }}</p>
+    </div>
+  }
+
+  @if (error) {
+    <div class="error-box">
+      <p>{{ error }}</p>
+    </div>
+  }
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cerrar</button>
+  <button mat-raised-button color="primary" (click)="askQuestion()" [disabled]="loading || questionControl.invalid">
+    Consultar
+  </button>
+</mat-dialog-actions>
