@@ -1,74 +1,84 @@
 <mat-toolbar color="primary" class="admin-toolbar">
+  <button mat-icon-button class="mobile-menu-button" (click)="toggleMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
   <div class="branding" routerLink="/admin/dashboard">
     <mat-icon class="logo-icon">admin_panel_settings</mat-icon>
     <span class="app-name">ServeFlash</span>
   </div>
 
-  <!-- Espacio intermedio -->
   <span class="spacer"></span>
-
-  <!-- Barra de navegación -->
-  <nav class="nav-menu">
-  @for (item of menuItemsClient; track $index) {
-    <a mat-button [routerLink]="item.route">
-      <mat-icon>{{item.icon}}</mat-icon>
-      {{item.name}}
-    </a>
-  }
-</nav>
-
-  <!-- Acciones rápidas y notificaciones -->
-  <div class="actions">
-    <!-- Menú de acciones rápidas -->
-    <button mat-icon-button [matMenuTriggerFor]="quickMenu">
-      <mat-icon>bolt</mat-icon>
-    </button>
-    <mat-menu #quickMenu="matMenu">
-        @for (action of quickActions; track $index) {
-        <button mat-menu-item (click)="onQuickAction(action.action)">
-          <mat-icon>{{action.icon}}</mat-icon>
-          <span>{{action.name}}</span>
-        </button>
+  
+  <!-- Menú principal  -->
+  @switch (userRole) {
+    @case ('admin') {
+      <nav class="nav-menu" [class.mobile-visible]="menuVisible">
+        @for (item of menuItems.admin; track item.name) {
+          <a mat-button 
+             [routerLink]="item.route"
+             [class.active-link]="isActive(item.route)">
+            <mat-icon>{{item.icon}}</mat-icon>
+            <span>{{item.name}}</span>
+          </a>
         }
-    </mat-menu>
+      </nav>
+    }
+    @case ('customer') {
+      <nav class="nav-menu" [class.mobile-visible]="menuVisible">
+        @for (item of menuItems.customer; track item.name) {
+          <a mat-button 
+             [routerLink]="item.route"
+             [class.active-link]="isActive(item.route)">
+            <mat-icon>{{item.icon}}</mat-icon>
+            <span>{{item.name}}</span>
+          </a>
+        }
+      </nav>
+    }
+  }
 
-    <!-- Notificaciones -->
-    <button mat-icon-button [matMenuTriggerFor]="notifications">
-      <mat-icon matBadge="3" matBadgeColor="warn" aria-hidden="false">notifications</mat-icon>
-    </button>
-    <mat-menu #notifications="matMenu">
-      <div class="notification-menu">
-        <h3>Notificaciones</h3>
-        <mat-divider></mat-divider>
-        <button mat-menu-item>
-          <mat-icon>warning</mat-icon>
-          <span>Productos con bajo stock</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>payment</mat-icon>
-          <span>Ventas pendientes</span>
-        </button>
-      </div>
-    </mat-menu>
+  <!-- Acciones rápidas para admin -->
+  @if (isAdmin) {
+    <div class="quick-actions">
+      <button mat-icon-button [matMenuTriggerFor]="quickActionsMenu">
+        <mat-icon>bolt</mat-icon>
+      </button>
+      <mat-menu #quickActionsMenu="matMenu">
+        @for (action of quickActions; track action.name) {
+          <button mat-menu-item (click)="onQuickAction(action.action)">
+            <mat-icon>{{action.icon}}</mat-icon>
+            <span>{{action.name}}</span>
+          </button>
+        }
+      </mat-menu>
+    </div>
+  }
 
-    <!-- Perfil de usuario -->
-    <button mat-button [matMenuTriggerFor]="profileMenu">
+  <!-- Menú de usuario -->
+  <div class="profile-menu">
+    <button mat-icon-button [matMenuTriggerFor]="userMenu">
       <mat-icon>account_circle</mat-icon>
+      @if (isAdmin) {
+        <mat-icon class="admin-badge">verified_user</mat-icon>
+      }
     </button>
-    <mat-menu #profileMenu="matMenu">
-      <button mat-menu-item routerLink="/admin/profile">
-        <mat-icon>person</mat-icon>
-        <span>Mi perfil</span>
-      </button>
-      <button mat-menu-item routerLink="/admin/settings">
-        <mat-icon>settings</mat-icon>
-        <span>Configuración</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        <span>Cerrar sesión</span>
-      </button>
-    </mat-menu>
   </div>
 </mat-toolbar>
+
+<!-- Menú desplegable de usuario -->
+<mat-menu #userMenu="matMenu" class="profile-dropdown">
+  <button mat-menu-item routerLink="/profile" routerLinkActive="active-link">
+    <mat-icon>person</mat-icon>
+    <span>Mi Perfil</span>
+  </button>
+  <button mat-menu-item routerLink="/settings" routerLinkActive="active-link">
+    <mat-icon>settings</mat-icon>
+    <span>Configuración</span>
+  </button>
+  <mat-divider></mat-divider>
+  <button mat-menu-item (click)="logout()">
+    <mat-icon>exit_to_app</mat-icon>
+    <span>Cerrar Sesión</span>
+  </button>
+</mat-menu>

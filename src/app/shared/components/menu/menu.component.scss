@@ -1,12 +1,11 @@
 .admin-toolbar {
-  position: sticky;
-  background-color: #00704A;
-  color: white;
-  top: 0;
-  z-index: 100;
   display: flex;
-  justify-content: space-between;
-  padding: 0 24px;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #00704A;
+  padding: 0 1rem;
   height: 64px;
 
   .branding {
@@ -14,14 +13,15 @@
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    
+
     .logo-icon {
-      font-size: 28px;
+      font-size: 24px;
     }
     
     .app-name {
       font-size: 18px;
       font-weight: 500;
+      color: white; 
     }
   }
 
@@ -29,34 +29,71 @@
     flex: 1;
   }
 
+  .mobile-menu-button {
+    display: none;
+    @media (max-width: 768px) {
+      display: inline-flex;
+      color: white;
+      margin-right: 8px;
+    }
+  }
+
   .nav-menu {
     display: flex;
-    gap: 4px;
+    align-items: center;
+    gap: 16px;
 
     a {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: background-color 0.3s;
+      height: 64px;
+      padding: 0 16px;
       color: white;
-      &:hover {
+      text-decoration: none;
+      &:hover,
+      &.active-link {
         background-color: rgba(255, 255, 255, 0.1);
       }
+      mat-icon {
+        font-size: 20px;
+      }
+    }
 
-      &.active-link {
-        background-color: rgba(255, 255, 255, 0.2);
+    @media (max-width: 768px) {
+      display: none;
+      position: absolute;
+      top: 64px;
+      left: 0;
+      width: 100%;
+      background-color: #00704A;
+      flex-direction: row; 
+      justify-content: center;
+      padding: 8px 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+      &.mobile-visible {
+        display: flex;
+      }
+
+      a {
+        height: 48px;
+        padding: 0 12px;
       }
     }
   }
 
-  .actions {
+  .profile-menu {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-left: 16px;
+
+    .admin-only {
+      display: block;
+    }
+    .user-only {
+      display: block;
+    }
   }
 }
 
@@ -74,4 +111,16 @@
 
 .mat-icon{
   color: white;
+}
+
+.profile-menu {
+  &.admin-menu {
+    .admin-only { display: block; }
+    .user-only { display: none; }
+  }
+
+  &:not(.admin-menu) {
+    .admin-only { display: none; }
+    .user-only { display: block; }
+  }
 }
